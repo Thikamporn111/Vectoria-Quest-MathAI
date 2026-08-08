@@ -13,7 +13,20 @@ await cp(resolve(root, 'app.js'), resolve(dist, 'static', 'app.js'));
 await cp(resolve(root, '.openai', 'hosting.json'), resolve(dist, '.openai', 'hosting.json'));
 await writeFile(resolve(dist, 'server', 'index.js'), `export default {
   async fetch(request, env) {
-    if (env.ASSETS) return env.ASSETS.fetch(request);
+    if (env.ASSETS) {
+      const url = new URL(request.url);
+      if (url.pathname === '/') {
+        url.pathname = '/index.html';
+        return env.ASSETS.fetch(new Request(url, request));
+      }
+      const response = await env.ASSETS.fetch(request);
+      if (response.status !== 404) return response;
+      if ((request.headers.get('accept') || '').includes('text/html')) {
+        url.pathname = '/index.html';
+        return env.ASSETS.fetch(new Request(url, request));
+      }
+      return response;
+    }
     return new Response('Vectoria Quest', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   }
 };\n`);

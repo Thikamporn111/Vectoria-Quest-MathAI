@@ -238,3 +238,7 @@ body{background:#071226}body::before{content:"";position:fixed;inset:0;backgroun
 .q5-progressive-hint>b{color:#ffe066;font-size:1.08rem}
 .q5-progressive-hint>span{display:block;padding:7px 10px;border-left:3px solid rgba(89,225,255,.72);background:rgba(24,83,133,.24);border-radius:0 8px 8px 0}
 .q5-progressive-hint .hint-vector{margin:0 .08em;color:inherit;font-size:1.08em;vertical-align:baseline}
+/* GitHub Pages: keep the cover above the body paint layer. */
+body::before{background-image:linear-gradient(90deg,rgba(3,9,24,.97) 0%,rgba(3,9,24,.78) 33%,rgba(3,9,24,.08) 68%,rgba(3,9,24,.35) 100%),url('/Vectoria-Quest-MathAI/hero-party.png?v=2');z-index:0;pointer-events:none}
+body::after{z-index:0}
+.map-screen,.quest-screen,.game-screen{position:relative;z-index:1}

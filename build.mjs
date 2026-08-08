@@ -8,6 +8,7 @@ await mkdir(resolve(dist, 'static'), { recursive: true });
 await mkdir(resolve(dist, '.openai'), { recursive: true });
 await cp(resolve(root, 'index.html'), resolve(dist, 'static', 'index.html'));
 await cp(resolve(root, 'styles.css'), resolve(dist, 'static', 'styles.css'));
+await cp(resolve(root, 'graph.css'), resolve(dist, 'static', 'graph.css'));
 await cp(resolve(root, 'app.js'), resolve(dist, 'static', 'app.js'));
 await cp(resolve(root, '.openai', 'hosting.json'), resolve(dist, '.openai', 'hosting.json'));
 await writeFile(resolve(dist, 'server', 'index.js'), `export default {

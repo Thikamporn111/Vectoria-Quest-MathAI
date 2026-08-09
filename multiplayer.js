@@ -58,6 +58,7 @@
             <p>ตั้งชื่อ เลือกตัวละคร แล้วสร้างห้องหรือเข้าร่วมกับเพื่อนได้สูงสุด 5 คน</p>
           </div>
           <div class="mp-setup-card">
+            <header class="mp-setup-heading"><span>เตรียมทีมก่อนออกผจญภัย</span><h2>เลือกตัวละครและปาร์ตี้ของท่าน</h2><p>ตั้งชื่อ เลือกตัวละคร และกำหนดจำนวนสมาชิกในปาร์ตี้ก่อนสร้างหรือเข้าห้อง</p></header>
             <div class="mp-name-block"><label class="mp-label" for="mpName">ชื่อของนักผจญภัย</label>
             <input class="mp-name-input" id="mpName" maxlength="20" autocomplete="nickname" placeholder="พิมพ์ชื่อผู้เล่นที่นี่" aria-describedby="mpNameHelp">
             <small id="mpNameHelp">ชื่อนี้จะแสดงให้เพื่อนในห้องเห็น</small></div>

@@ -916,3 +916,30 @@ function showExitGameMenu() {
 document.querySelector('#saveGameBtn')?.addEventListener('click', saveGameNow);
 document.querySelector('#exitGameBtn')?.addEventListener('click', showExitGameMenu);
 window.addEventListener('pagehide', () => save());
+/* Conditions popup for the 2D perpendicular-vector shortcut. */
+const renderQ4LessonBase=renderQ4Lesson;
+renderQ4Lesson=function(){
+  renderQ4LessonBase();
+  const rule=document.querySelector('.q4-rule');
+  if(!rule)return;
+  const ruleText=rule.querySelector('strong');
+  if(ruleText)ruleText.textContent='ถ้า (x, y) เวกเตอร์ที่ตั้งฉากเลือกได้เป็น (y, -x)';
+  rule.insertAdjacentHTML('beforeend','<button type="button" id="q4RuleWarning" class="q4-warning-btn">⚠️ ข้อควรระวังในการใช้กฎ</button>');
+  rule.insertAdjacentHTML('afterend',`<div class="q4-rule-modal" id="q4RuleModal" hidden>
+    <div class="q4-rule-modal-card" role="dialog" aria-modal="true" aria-labelledby="q4RuleModalTitle">
+      <button type="button" class="q4-rule-modal-close" id="q4RuleModalClose" aria-label="ปิด">×</button>
+      <p class="section-icon">คู่มือกฎเวกเตอร์ตั้งฉาก</p>
+      <h2 id="q4RuleModalTitle">กฎนี้ใช้เมื่อใด?</h2>
+      <div class="q4-rule-condition good"><b>✓ ใช้กฎนี้ได้ เมื่อครบ 3 เงื่อนไข</b><ol><li>เป็นเวกเตอร์ในระนาบ 2 มิติ มีเพียงแกน x และ y</li><li>โจทย์ต้องการเวกเตอร์ที่ตั้งฉาก ทำมุม 90°</li><li>ต้องการเวกเตอร์ที่มีขนาดเท่ากับเวกเตอร์เดิม</li></ol></div>
+      <div class="q4-rule-condition caution"><b>! จุดที่ต้องระวัง</b><ul><li>ถ้าต้องการขนาดเปลี่ยนไป ให้คูณ (y, -x) ด้วยจำนวนที่โจทย์กำหนด เช่น ต้องการยาว 2 เท่า ใช้ (2y, -2x)</li><li>ถ้าเป็นเวกเตอร์ 3 มิติ (x, y, z) ใช้กฎลัดนี้ไม่ได้ทันที</li><li>เวกเตอร์เริ่มต้นต้องไม่ใช่ (0, 0) เพราะเวกเตอร์ศูนย์ไม่มีทิศทางและระบุมุม 90° ไม่ได้</li></ul></div>
+      <div class="q4-rule-check"><b>ตรวจคำตอบทุกครั้งด้วย Dot Product</b><span>(x, y) · (y, -x) = xy - xy = 0</span><small>เมื่อผลคูณจุดเท่ากับ 0 และทั้งคู่ไม่ใช่เวกเตอร์ศูนย์ จึงตั้งฉากกัน</small></div>
+      <button type="button" class="primary-btn" id="q4RuleModalOkay">เข้าใจแล้ว</button>
+    </div></div>`);
+  const modal=document.querySelector('#q4RuleModal');
+  const openModal=()=>{modal.hidden=false;document.body.classList.add('modal-open')};
+  const closeModal=()=>{modal.hidden=true;document.body.classList.remove('modal-open')};
+  document.querySelector('#q4RuleWarning').onclick=openModal;
+  document.querySelector('#q4RuleModalClose').onclick=closeModal;
+  document.querySelector('#q4RuleModalOkay').onclick=closeModal;
+  modal.onclick=e=>{if(e.target===modal)closeModal()};
+};

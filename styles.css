@@ -252,4 +252,6 @@ body::after{z-index:0}
 .math-nowrap{display:inline-flex!important;align-items:center;width:max-content!important;max-width:100%;margin:.28em 0;white-space:nowrap!important;color:#eef6ff;font:700 clamp(13px,3.2vw,18px) "Chakra Petch",sans-serif}
 .math-nowrap .math-vector{flex:0 0 auto;margin:.05em .02em}
 .opposite-vector-equation{display:inline-flex!important;align-items:center;gap:.1em;white-space:nowrap!important;vertical-align:middle}
+.opposite-formula-line,.opposite-angle-line{display:flex;align-items:center;justify-content:center;gap:.12em;white-space:nowrap}
+.opposite-angle-line{margin-top:.55rem;font-size:.82em;color:#d9e9ff}
 @media(max-width:420px){.lesson-step>div{font-size:13px}.math-nowrap{display:flex!important;font-size:13px}}

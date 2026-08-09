@@ -527,6 +527,8 @@ renderLesson=function(q){
   if(q.id!==2)return;
   const rows=document.querySelectorAll('.lesson-steps .lesson-step>div');
   if(rows[2])rows[2].innerHTML='ดังนั้น <span class="math-nowrap opposite-vector-equation">-<i class="math-vector">P</i> = <b>(-3, -2)</b></span>';
+  const formula=document.querySelector('.formula');
+  if(formula)formula.innerHTML='<span class="opposite-formula-line"><i class="math-vector">P</i> = (3, 2) &nbsp;→&nbsp; -<i class="math-vector">P</i> = <em>(-3, -2)</em></span><span class="opposite-angle-line">มุมระหว่าง <i class="math-vector">P</i> กับ -<i class="math-vector">P</i> = <b>180°</b></span>';
 };
 // Floor 4 boss: only allow graphing vectors that are actually perpendicular.
 // This keeps the angle diagram mathematically consistent (theta must be 90 degrees).

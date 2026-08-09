@@ -547,6 +547,8 @@ window.addEventListener('focus',()=>{if(state.sound&&vectoriaAudio.timer){vector
 
 const audioVersionKey='vectoria-audio-enabled-v3';
 if(!localStorage.getItem(audioVersionKey)){state.sound=true;localStorage.setItem(audioVersionKey,'1');save()}
+// Every fresh visit starts with game audio enabled; a previous muted session is not carried over.
+state.sound=true;save();
 let musicVolume=Math.max(0,Math.min(1,Number(localStorage.getItem('vectoria-music-volume')??.5)));
 function showAudioStartGate(){if(document.querySelector('#audioStartGate')||!state.sound)return;document.body.insertAdjacentHTML('beforeend','<button class="audio-start-gate" id="audioStartGate"><span>⚔</span><b>เข้าสู่เกมพร้อมเพลงผจญภัย</b><small>คลิกหนึ่งครั้งเพื่อเริ่มเกมและเปิดเสียง</small><i>เริ่มการผจญภัย →</i></button>');document.querySelector('#audioStartGate').onclick=()=>{vectoriaAudio.start();document.querySelector('#audioStartGate')?.remove()}}
 const decorateSoundButton=()=>{const b=document.querySelector('#soundBtn');if(!b)return;b.textContent=state.sound?'♫ เพลง':'🔇 ปิด';b.title=state.sound?'เพลงผจญภัยและเอฟเฟ็กต์เปิดอยู่':'กดเพื่อเปิดเพลงและเอฟเฟ็กต์';b.setAttribute('aria-label',b.title)};

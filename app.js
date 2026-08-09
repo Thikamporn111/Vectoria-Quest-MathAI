@@ -579,16 +579,16 @@ renderLesson=function(q){
 };
 
 /* Adventure soundtrack and game sound effects (Web Audio, no external file). */
-const vectoriaAudio={ctx:null,master:null,music:null,sfx:null,timer:null,beat:0,bgm:null,boom:null,
+const vectoriaAudio={ctx:null,master:null,music:null,sfx:null,timer:null,beat:0,bgm:null,boom:null,gateAccepted:false,
   ensure(){if(!this.ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;this.ctx=new C;this.master=this.ctx.createGain();this.music=this.ctx.createGain();this.sfx=this.ctx.createGain();this.master.gain.value=.95;this.music.gain.value=.48;this.sfx.gain.value=.85;this.music.connect(this.master);this.sfx.connect(this.master);this.master.connect(this.ctx.destination)}if(this.ctx.state==='suspended')this.ctx.resume();return true},
   tone(freq,duration=.16,volume=.12,type='triangle',when=0,target='sfx'){if(!state.sound||!this.ensure())return;const t=this.ctx.currentTime+when,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(volume,t+.018);g.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(g);g.connect(this[target]);o.start(t);o.stop(t+duration+.03)},
   effect(kind){if(kind==='explode'&&state.sound){if(!this.boom){this.boom=new Audio('boss-explosion.mp3?v=1');this.boom.preload='auto'}this.boom.currentTime=0;this.boom.volume=.92;this.boom.play().catch(()=>{});return}const notes={click:[[420,.06,.055]],good:[[523,.11,.11],[659,.13,.1,.08],[784,.22,.1,.17]],bad:[[220,.14,.1],[165,.24,.09,.11]],hurt:[[880,.09,.18],[660,.1,.18,.07],[390,.2,.16,.15]],item:[[659,.08,.08],[880,.12,.09,.07],[1047,.18,.08,.15]],gate:[[196,.2,.08],[294,.25,.09,.12],[392,.35,.1,.25]],portal:[[220,.13,.13],[330,.16,.14,.08],[494,.2,.14,.17],[740,.34,.12,.28]],boss:[[131,.18,.12],[196,.22,.1,.12],[262,.35,.1,.25]]}[kind]||[];notes.forEach(n=>this.tone(n[0],n[1],n[2],kind==='hurt'?'sawtooth':'triangle',n[3]||0))},
-  start(){if(!state.sound||this.timer)return;if(!this.bgm){this.bgm=new Audio('adventure-theme.mp3?v=1');this.bgm.loop=true;this.bgm.preload='auto'}this.bgm.volume=typeof musicVolume==='number'?musicVolume:.5;this.timer=true;this.bgm.play().then(()=>document.querySelector('#audioStartGate')?.remove()).catch(()=>{this.timer=null;showAudioStartGate()});document.querySelector('#soundBtn')?.classList.add('playing')},
+  start(){if(!state.sound||this.timer)return;if(!this.bgm){this.bgm=new Audio('adventure-theme.mp3?v=1');this.bgm.loop=true;this.bgm.preload='auto'}this.bgm.volume=typeof musicVolume==='number'?musicVolume:.5;this.timer=true;this.bgm.play().catch(()=>{this.timer=null;if(!this.gateAccepted)showAudioStartGate()});document.querySelector('#soundBtn')?.classList.add('playing')},
   stop(){this.bgm?.pause();this.timer=null;document.querySelector('#soundBtn')?.classList.remove('playing')}
 };
 beep=function(good=true){vectoriaAudio.effect(good?'good':'bad')};
 document.querySelector('#soundBtn').onclick=()=>{state.sound=!state.sound;save();if(state.sound){vectoriaAudio.start();vectoriaAudio.effect('item')}else vectoriaAudio.stop();toast(state.sound?'เปิดเพลงและเอฟเฟ็กต์เสียงแล้ว':'ปิดเสียงแล้ว')};
-document.addEventListener('pointerdown',e=>{if(state.sound)vectoriaAudio.start();const b=e.target.closest('button');if(!b||b.id==='soundBtn')return;vectoriaAudio.effect(b.classList.contains('primary-btn')?'gate':'click')},{capture:true});
+document.addEventListener('pointerdown',e=>{if(e.target.closest('#audioStartGate'))return;if(state.sound)vectoriaAudio.start();const b=e.target.closest('button');if(!b||b.id==='soundBtn')return;vectoriaAudio.effect(b.classList.contains('primary-btn')?'gate':'click')},{capture:true});
 window.addEventListener('blur',()=>{if(vectoriaAudio.ctx?.state==='running')vectoriaAudio.ctx.suspend();vectoriaAudio.bgm?.pause()});
 window.addEventListener('focus',()=>{if(state.sound&&vectoriaAudio.timer){vectoriaAudio.ctx?.resume();vectoriaAudio.bgm?.play().catch(()=>{})}});
 
@@ -611,11 +611,15 @@ function showAudioStartGate(){
       </div>
     </section>`);
   const enterGame=continueSaved=>{
-    vectoriaAudio.start();
     document.querySelector('#audioStartGate')?.remove();
+    vectoriaAudio.gateAccepted=true;
+    vectoriaAudio.start();
     if(continueSaved){
       showMap();
       toast(`เล่นต่อจากความคืบหน้าเดิม · ผ่านแล้ว ${state.completed.length} / 5 ด่าน`);
+    }else if(window.vectoriaMultiplayer?.showEntrance){
+      window.vectoriaMultiplayer.showEntrance();
+      window.scrollTo({top:0,behavior:'auto'});
     }
   };
   document.querySelector('#continueLastGame')?.addEventListener('click',()=>enterGame(true));

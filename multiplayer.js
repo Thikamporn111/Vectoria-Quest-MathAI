@@ -61,7 +61,7 @@
             <div class="mp-name-block"><label class="mp-label" for="mpName">ชื่อของนักผจญภัย</label>
             <input class="mp-name-input" id="mpName" maxlength="20" autocomplete="nickname" placeholder="พิมพ์ชื่อผู้เล่นที่นี่" aria-describedby="mpNameHelp">
             <small id="mpNameHelp">ชื่อนี้จะแสดงให้เพื่อนในห้องเห็น</small></div>
-            <span class="mp-label mp-character-title">เลือกตัวละคร 3D ของคุณ</span>
+            <span class="mp-label mp-character-title">เลือกตัวละครของคุณ</span>
             <div class="mp-avatar-grid" id="mpAvatarGrid">
               ${Object.entries(avatars).map(([id,a],index) => `<button type="button" class="mp-avatar ${id==='knight'?'selected':''}" data-avatar="${id}" style="--avatar:${a.color};--sprite-index:${index}" aria-label="เลือก ${a.name} ${a.role}"><span class="mp-avatar-art" aria-hidden="true"></span><span class="mp-avatar-info"><i>${a.icon}</i><b>${a.name}</b><small>${a.role}</small></span><em>เลือกตัวนี้</em></button>`).join('')}
             </div>

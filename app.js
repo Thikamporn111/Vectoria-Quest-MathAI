@@ -622,3 +622,17 @@ drawVectors = function(vectors) {
     drawCanvasVectorName(x, label, ex + (vx >= 0 ? 8 : -70), ey + (vy >= 0 ? -10 : 24), color);
   });
 };
+
+// If the introductory dialog is below a short viewport, the first movement
+// command should still start the minigame instead of leaving movement locked.
+function unlockAdventureFromMovement(event) {
+  const movementKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D'];
+  const isKeyboardMove = event.type === 'keydown' && movementKeys.includes(event.key);
+  const isPadMove = event.type === 'pointerdown' && event.target.closest?.('.mobile-pad button');
+  if (!isKeyboardMove && !isPadMove) return;
+  const dialog = document.querySelector('#gameDialog');
+  if (dialog && dialog.style.display !== 'none') dialog.style.display = 'none';
+  document.querySelector('#gameCanvas')?.focus();
+}
+document.addEventListener('keydown', unlockAdventureFromMovement, true);
+document.addEventListener('pointerdown', unlockAdventureFromMovement, true);

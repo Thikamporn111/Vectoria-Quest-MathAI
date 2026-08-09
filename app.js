@@ -704,3 +704,17 @@ showMap = function() {
 
 // Refresh the initial map so its already-rendered buttons use the new routing.
 showMap();
+
+// Add stable HTML axis names above the training canvas so x and y stay clear
+// regardless of canvas font support or later redraws.
+const renderGraphTrainerBeforeAxisNames = renderGraphTrainer;
+renderGraphTrainer = function(q) {
+  renderGraphTrainerBeforeAxisNames(q);
+  const canvas = document.querySelector('#practiceGraph');
+  if (!canvas || canvas.parentElement?.classList.contains('practice-axis-wrap')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'practice-axis-wrap';
+  canvas.parentNode.insertBefore(wrap, canvas);
+  wrap.append(canvas);
+  wrap.insertAdjacentHTML('beforeend', '<b class="practice-axis-name axis-x">แกน x</b><b class="practice-axis-name axis-y">แกน y</b>');
+};

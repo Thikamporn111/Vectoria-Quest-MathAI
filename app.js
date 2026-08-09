@@ -943,6 +943,8 @@ renderQ4Lesson=function(){
   if(!rule)return;
   const ruleText=rule.querySelector('strong');
   if(ruleText)ruleText.textContent='ถ้า (x, y) เวกเตอร์ที่ตั้งฉากเลือกได้เป็น (y, -x)';
+  const ruleDescription=rule.querySelector('p');
+  if(ruleDescription)ruleDescription.textContent='ตรวจคำตอบด้วย dot product: เวกเตอร์ตั้งฉากกันเมื่อมุมเป็น 90 องศา';
   rule.insertAdjacentHTML('beforeend','<button type="button" id="q4RuleWarning" class="q4-warning-btn">⚠️ ข้อควรระวังในการใช้กฎ</button>');
   rule.insertAdjacentHTML('afterend',`<div class="q4-rule-modal" id="q4RuleModal" hidden>
     <div class="q4-rule-modal-card" role="dialog" aria-modal="true" aria-labelledby="q4RuleModalTitle">
@@ -954,6 +956,7 @@ renderQ4Lesson=function(){
       <div class="q4-rule-check"><b>ตรวจคำตอบทุกครั้งด้วย Dot Product</b><span>(x, y) · (y, -x) = xy - xy = 0</span><small>เมื่อผลคูณจุดเท่ากับ 0 และทั้งคู่ไม่ใช่เวกเตอร์ศูนย์ จึงตั้งฉากกัน</small></div>
       <button type="button" class="primary-btn" id="q4RuleModalOkay">เข้าใจแล้ว</button>
     </div></div>`);
+  document.querySelector('.q4-rule-check')?.remove();
   /* Show each value once and teach magnitude before using it in the angle formula. */
   const cards=document.querySelectorAll('.q4-step-card');
   const angleTable=`<p class="q4-angle-question"><b>cos θ = 0 มีมุมเท่าไหร่?</b> ดูจากตารางด้านล่าง</p><table class="inline-cos-table q4-proof-table"><thead><tr><th>θ</th><th>0°</th><th>90°</th><th>180°</th></tr></thead><tbody><tr><th>cos θ</th><td>1</td><td class="key-cell">0</td><td>-1</td></tr><tr class="angle-pictures"><th>รูปมุม</th><td><span class="angle-icon angle-zero"><i></i><b></b></span><small>ทิศเดียวกัน</small></td><td class="key-cell"><span class="angle-icon angle-ninety"><i></i><b></b><em></em></span><small>ตั้งฉาก</small></td><td><span class="angle-icon angle-oneeighty"><i></i><b></b></span><small>ทิศตรงข้าม</small></td></tr></tbody></table><strong class="q4-angle-answer">จากตาราง cos 90° = 0 ดังนั้น θ = 90°</strong>`;

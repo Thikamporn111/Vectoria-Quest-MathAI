@@ -550,3 +550,75 @@ renderBossGraph = function(q) {
     beep(false);
   }, true);
 };
+
+// Canvas fonts do not consistently support the combining vector-arrow glyph.
+// Draw the arrow ourselves so A, B and C never turn into square fallback symbols.
+function drawCanvasVectorName(ctx, label, x, y, color) {
+  const name = String(label).replace(/[\u20d7\u0302]/g, '');
+  ctx.save();
+  ctx.font = '700 19px Chakra Petch, Noto Sans Thai, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = color;
+  ctx.fillText(name, x, y);
+
+  const prefixWidth = name.startsWith('-') ? ctx.measureText('-').width : 0;
+  const letter = name.replace(/^-/, '').charAt(0);
+  const letterWidth = Math.max(12, ctx.measureText(letter).width);
+  const left = x + prefixWidth;
+  const top = y - 22;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  ctx.moveTo(left, top);
+  ctx.lineTo(left + letterWidth + 4, top);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(left + letterWidth + 4, top);
+  ctx.lineTo(left + letterWidth, top - 3);
+  ctx.lineTo(left + letterWidth, top + 3);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+drawVectors = function(vectors) {
+  const c = document.querySelector('#vectorCanvas');
+  if (!c) return;
+  const x = c.getContext('2d'), w = c.width, h = c.height, mid = w / 2;
+  const max = Math.max(5, ...vectors.flatMap(v => [Math.abs(v[0]), Math.abs(v[1])])) * 1.25;
+  const scale = (w / 2 - 38) / max;
+  x.clearRect(0, 0, w, h);
+  x.strokeStyle = '#1e3150';
+  x.lineWidth = 1;
+  for (let i = -max; i <= max; i += max / 5) {
+    x.beginPath(); x.moveTo(0, mid - i * scale); x.lineTo(w, mid - i * scale); x.stroke();
+    x.beginPath(); x.moveTo(mid + i * scale, 0); x.lineTo(mid + i * scale, h); x.stroke();
+  }
+  x.strokeStyle = '#75859f';
+  x.lineWidth = 2;
+  x.beginPath();
+  x.moveTo(18, mid); x.lineTo(w - 18, mid);
+  x.moveTo(mid, 18); x.lineTo(mid, h - 18);
+  x.stroke();
+  x.fillStyle = '#9babc6';
+  x.font = '20px Chakra Petch, Noto Sans Thai, sans-serif';
+  x.fillText('x', w - 30, mid - 12);
+  x.fillText('y', mid + 12, 25);
+
+  vectors.forEach(([vx, vy, label, color]) => {
+    const ex = mid + vx * scale, ey = mid - vy * scale;
+    const ang = Math.atan2(ey - mid, ex - mid);
+    x.strokeStyle = color;
+    x.fillStyle = color;
+    x.lineWidth = 5;
+    x.beginPath(); x.moveTo(mid, mid); x.lineTo(ex, ey); x.stroke();
+    x.beginPath();
+    x.moveTo(ex, ey);
+    x.lineTo(ex - 18 * Math.cos(ang - .5), ey - 18 * Math.sin(ang - .5));
+    x.lineTo(ex - 18 * Math.cos(ang + .5), ey - 18 * Math.sin(ang + .5));
+    x.closePath(); x.fill();
+    drawCanvasVectorName(x, label, ex + (vx >= 0 ? 8 : -70), ey + (vy >= 0 ? -10 : 24), color);
+  });
+};

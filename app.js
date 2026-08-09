@@ -488,10 +488,13 @@ function showAdventure(forcedFloor=null){
   gameWorld={hero,crystals,enemies,portal,collected:0,lastHit:0,q,floor,cfg,partySize,difficulty,playerName,avatarId,avatarIndex};
   const dialog=document.querySelector('#gameDialog');dialog.querySelector('p').textContent=`ปาร์ตี้ ${partySize} คน · ${cfg.tip} เก็บ${cfg.item}ให้ครบ ${cfg.goal}! ระวังมอนสเตอร์ ${enemies.length} ตัว`;document.querySelector('#closeDialog').onclick=()=>{dialog.style.display='none';canvas.focus()};
   document.querySelector('#actionBtn').onclick=()=>tryPortal();
-  const down=e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(e.key))e.preventDefault();gameKeys[e.key]=true};const up=e=>gameKeys[e.key]=false;
-  window.onkeydown=down;window.onkeyup=up;
+  const movementKeys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'];
+  const down=e=>{if(!movementKeys.includes(e.key))return;e.preventDefault();dialog.style.display='none';gameKeys[e.key]=true};
+  const up=e=>{if(!movementKeys.includes(e.key))return;e.preventDefault();gameKeys[e.key]=false};
+  window.onkeydown=down;window.onkeyup=up;window.onblur=()=>{gameKeys={}};
+  canvas.tabIndex=0;
   const moveHero=(key,amount=48)=>{if(key==='ArrowLeft')hero.x=Math.max(35,hero.x-amount);if(key==='ArrowRight')hero.x=Math.min(1245,hero.x+amount);if(key==='ArrowUp')hero.y=Math.max(55,hero.y-amount);if(key==='ArrowDown')hero.y=Math.min(685,hero.y+amount)};
-  document.querySelectorAll('.mobile-pad button').forEach(b=>{const k=b.dataset.key;let holdTimer=0;b.onpointerdown=e=>{e.preventDefault();dialog.style.display='none';canvas.focus();moveHero(k,48);gameKeys[k]=true;clearInterval(holdTimer);holdTimer=setInterval(()=>moveHero(k,18),70);b.setPointerCapture?.(e.pointerId)};const release=e=>{e?.preventDefault?.();gameKeys[k]=false;clearInterval(holdTimer);holdTimer=0};b.onpointerup=b.onpointercancel=b.onpointerleave=release;b.onclick=e=>e.preventDefault()});
+  document.querySelectorAll('.mobile-pad button').forEach(b=>{const k=b.dataset.key;let holdTimer=0,activePointer=null;const release=e=>{if(e&&activePointer!==null&&e.pointerId!==activePointer)return;e?.preventDefault?.();gameKeys[k]=false;clearInterval(holdTimer);holdTimer=0;activePointer=null;b.classList.remove('is-held')};b.onpointerdown=e=>{e.preventDefault();dialog.style.display='none';canvas.focus({preventScroll:true});activePointer=e.pointerId;moveHero(k,34);gameKeys[k]=true;b.classList.add('is-held');clearInterval(holdTimer);holdTimer=setInterval(()=>{if(gameKeys[k])moveHero(k,15)},65);try{b.setPointerCapture(e.pointerId)}catch{}};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;b.onclick=e=>e.preventDefault();b.oncontextmenu=e=>e.preventDefault()});
   function enterPortal(gateX,gateY){
     if(gameWorld.transitioning)return;
     gameWorld.transitioning=true;gameKeys={};window.onkeydown=null;window.onkeyup=null;

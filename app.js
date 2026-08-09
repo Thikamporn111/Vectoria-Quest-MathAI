@@ -659,3 +659,48 @@ renderChallenge = function(q) {
   }
   renderChallengeBeforeFinalBossValidation(q);
 };
+
+// Every unlocked map entrance starts with its matching playable minigame.
+showMap = function() {
+  state.step = 0;
+  save();
+  const app = document.querySelector('#app');
+  app.innerHTML = '';
+  app.append(document.querySelector('#mapTemplate').content.cloneNode(true));
+  const nodes = document.querySelector('#dungeonNodes');
+
+  quests.forEach((q, i) => {
+    const done = state.completed.includes(q.id);
+    const open = i === 0 || state.completed.includes(i);
+    const button = document.createElement('button');
+    button.className = `dungeon-node ${done ? 'done' : open ? 'unlocked' : 'locked'}`;
+    button.dataset.label = q.map;
+    button.dataset.floor = String(i);
+    button.innerHTML = `<strong>${done ? '✓' : open ? q.id : '♢'}</strong>`;
+    button.setAttribute('aria-label', `${q.map} ${done ? 'ผ่านแล้ว' : open ? 'เข้าได้' : 'ยังล็อก'}`);
+    button.onclick = () => open ? showAdventure(i) : toast('ต้องผ่านด่านก่อนหน้าก่อน');
+    nodes.append(button);
+  });
+
+  document.querySelector('#mapProgress').textContent = `ผ่านแล้ว ${state.completed.length} / 5 ด่าน`;
+  const next = Math.min(state.completed.length, 4);
+  const continueButton = document.querySelector('#continueBtn');
+  continueButton.textContent = state.completed.length === 5
+    ? 'ชมบทสรุปชัยชนะ →'
+    : `เข้าสู่${quests[next].map} →`;
+  continueButton.onclick = () => state.completed.length === 5
+    ? openQuest(4, 2)
+    : showAdventure(next);
+
+  document.querySelector('#resetBtn').onclick = () => {
+    if (confirm('เริ่มเกมใหม่และลบความคืบหน้าทั้งหมดหรือไม่?')) {
+      state = {...defaultState, completed: []};
+      save();
+      showMap();
+    }
+  };
+  app.focus();
+};
+
+// Refresh the initial map so its already-rendered buttons use the new routing.
+showMap();

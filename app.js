@@ -573,6 +573,11 @@ openQuest=function(...args){if(document.querySelector('.adventure-screen'))vecto
 const completeQuestBeforeBossDefeat=completeQuest;
 let bossDefeatRunning=false;
 completeQuest=function(q){if(bossDefeatRunning)return;bossDefeatRunning=true;const root=document.querySelector('#questContent'),portrait=document.querySelector('.boss-portrait');portrait?.classList.add('boss-defeated');root.innerHTML=`<section class="boss-defeat-scene"><p class="section-icon">⚔ FINAL STRIKE</p><h2>โจมตีจุดอ่อนสำเร็จ!</h2><div class="boss-explosion" id="bossExplosion"><span>${q.glyph}</span>${Array.from({length:16},(_,i)=>`<i style="--i:${i}"></i>`).join('')}</div><h3>${q.name} พ่ายแพ้แล้ว</h3><p>พลังของบอสกำลังแตกสลาย…</p><button class="primary-btn boss-reward-next" id="bossRewardNext">ไปรับรางวัล <span>→</span></button></section>`;vectoriaAudio.effect('boss');setTimeout(()=>{document.querySelector('#bossExplosion')?.classList.add('detonate');vectoriaAudio.effect('explode')},520);setTimeout(()=>document.querySelector('#bossRewardNext')?.classList.add('show'),1750);document.querySelector('#bossRewardNext').onclick=()=>{bossDefeatRunning=false;completeQuestBeforeBossDefeat(q)};root.scrollIntoView({behavior:'smooth',block:'start'})};
+
+// In minigames the scratchpad sits below the game instead of floating over it.
+const placeScratchpadForScreen=()=>{const scratch=document.querySelector('#universalScratch'),game=document.querySelector('.game-screen'),app=document.querySelector('#app');if(!scratch)return;if(game){if(scratch.previousElementSibling!==app)app.insertAdjacentElement('afterend',scratch);scratch.classList.add('in-game')}else{if(scratch.parentElement!==document.body)document.body.append(scratch);scratch.classList.remove('in-game')}};
+new MutationObserver(()=>requestAnimationFrame(placeScratchpadForScreen)).observe(document.querySelector('#app'),{childList:true,subtree:true});
+placeScratchpadForScreen();
 // Floor 4 boss: only allow graphing vectors that are actually perpendicular.
 // This keeps the angle diagram mathematically consistent (theta must be 90 degrees).
 const renderBossGraphBeforePerpendicularGuard = renderBossGraph;

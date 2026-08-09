@@ -556,6 +556,10 @@ toast=function(msg){toastBeforeAudio(msg);if(!state.sound)return;if(/เก็�
 let lastFootstep=0;
 document.addEventListener('keydown',e=>{if(!document.querySelector('.adventure-screen')||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(e.key))return;const now=Date.now();if(now-lastFootstep>190){lastFootstep=now;vectoriaAudio.tone(115,.045,.045,'square')}},true);
 document.addEventListener('pointerdown',e=>{if(e.target.closest('.mobile-pad button'))vectoriaAudio.tone(115,.045,.045,'square')},true);
+
+// Keep the compact floating scratchpad, but remove the oversized boss-page button.
+const renderChallengeBeforeRemovingBossScratchButton=renderChallenge;
+renderChallenge=function(q){renderChallengeBeforeRemovingBossScratchButton(q);document.querySelector('.boss-scratch-btn')?.remove()};
 // Floor 4 boss: only allow graphing vectors that are actually perpendicular.
 // This keeps the angle diagram mathematically consistent (theta must be 90 degrees).
 const renderBossGraphBeforePerpendicularGuard = renderBossGraph;

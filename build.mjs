@@ -10,6 +10,8 @@ await cp(resolve(root, 'index.html'), resolve(dist, 'static', 'index.html'));
 await cp(resolve(root, 'styles.css'), resolve(dist, 'static', 'styles.css'));
 await cp(resolve(root, 'graph.css'), resolve(dist, 'static', 'graph.css'));
 await cp(resolve(root, 'app.js'), resolve(dist, 'static', 'app.js'));
+await cp(resolve(root, 'multiplayer.js'), resolve(dist, 'static', 'multiplayer.js'));
+await cp(resolve(root, 'multiplayer.css'), resolve(dist, 'static', 'multiplayer.css'));
 await cp(resolve(root, '.openai', 'hosting.json'), resolve(dist, '.openai', 'hosting.json'));
 await writeFile(resolve(dist, 'server', 'index.js'), `export default {
   async fetch(request, env) {

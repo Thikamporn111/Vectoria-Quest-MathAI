@@ -505,3 +505,15 @@ renderQ4Lesson=function(){
   const cards=document.querySelectorAll('.q4-step-card');
   if(cards[1])cards[1].querySelector('div').innerHTML=`<h3>ตรวจว่า A ตั้งฉากกับ B จริงไหม</h3><p>เริ่มจากสูตรที่เชื่อม Dot Product กับมุม</p><div class="q4-calc"><b>A · B = |A||B| cos θ</b><br><br>1) หา A · B ด้วยสูตร AₓBₓ + AᵧBᵧ<br>A · B = (4)(-3) + (-3)(-4)<br>= -12 + 12<br>= <b>0</b><br><br>2) หาขนาดด้วยสูตร |V| = √(Vₓ² + Vᵧ²)<br>|A| = √(4² + (-3)²) = √25 = <b>5</b><br>|B| = √((-3)² + (-4)²) = √25 = <b>5</b><br><br>3) แทนค่าใน A · B = |A||B| cos θ<br>0 = (5)(5) cos θ<br>0 = 25 cos θ<br>cos θ = 0<br>θ = <b>90°</b></div><p>ดังนั้น A ตั้งฉากกับ B จริง หรือ <b>A ⟂ B</b></p>`;
 };
+/* Keep every magnitude expression together so vector marks never fall apart. */
+const renderLessonBeforeStableMath=renderLesson;
+renderLesson=function(q){
+  renderLessonBeforeStableMath(q);
+  if(q.id!==3)return;
+  const rows=document.querySelectorAll('.lesson-steps .lesson-step>div');
+  const v=n=>`<i class="math-vector">${n}</i>`;
+  if(rows[0])rows[0].innerHTML=`เริ่มจากสูตรขนาดเวกเตอร์ <span class="math-nowrap">|${v('V')}| = √(x² + y²)</span>`;
+  if(rows[1])rows[1].innerHTML=`แทนองค์ประกอบของ ${v('P')} <span class="math-nowrap">|${v('P')}| = √(3² + 4²)</span>`;
+  if(rows[2])rows[2].innerHTML=`คำนวณค่าใต้เครื่องหมายราก <span class="math-nowrap">√(9 + 16) = √25</span>`;
+  if(rows[3])rows[3].innerHTML=`ถอดราก <span class="math-nowrap">√25 = <b>5</b></span>`;
+};

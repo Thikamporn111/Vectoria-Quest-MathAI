@@ -840,6 +840,7 @@ function showExitGameMenu() {
           <p><b>${playerName.replace(/[&<>"']/g,'')}</b> ความคืบหน้าของคุณถูกเก็บไว้อย่างปลอดภัย</p>
           <div class="exit-save-summary"><span>ด่านที่ผ่าน</span><strong>${state.completed.length} / 5</strong><span>คริสตัลความรู้</span><strong>${state.xp}</strong></div>
           <button class="exit-continue-btn" id="continueSavedGame">▶ เล่นเกมต่อ</button>
+          <button class="exit-map-btn" id="returnToMapFromExit">🗺 กลับไปหน้าแผนที่</button>
           <button class="exit-reset-btn" id="resetSavedGame">↻ เริ่มเล่นเกมใหม่ <small>(Reset)</small></button>
           <small class="exit-warning">การ Reset จะลบความคืบหน้าของเกมนี้ทั้งหมด</small>
         </div>
@@ -850,6 +851,12 @@ function showExitGameMenu() {
     menu.classList.add('closing');
     setTimeout(() => menu.remove(),220);
     toast('กลับสู่การผจญภัย');
+  };
+  document.querySelector('#returnToMapFromExit').onclick = () => {
+    menu.remove();
+    showMap();
+    window.scrollTo({top:0,behavior:'smooth'});
+    toast('กลับสู่หน้าแผนที่ดันเจี้ยน');
   };
   document.querySelector('#resetSavedGame').onclick = async () => {
     if (!confirm('เริ่มเกมใหม่และลบความคืบหน้าทั้งหมดจริงหรือไม่?')) return;

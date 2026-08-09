@@ -530,6 +530,20 @@ renderLesson=function(q){
   const formula=document.querySelector('.formula');
   if(formula)formula.innerHTML='<span class="opposite-formula-line"><i class="math-vector">P</i> = (3, 2) &nbsp;→&nbsp; -<i class="math-vector">P</i> = <em>(-3, -2)</em></span><span class="opposite-angle-line">มุมระหว่าง <i class="math-vector">P</i> กับ -<i class="math-vector">P</i> = <b>180°</b></span>';
 };
+
+/* Adventure soundtrack and game sound effects (Web Audio, no external file). */
+const vectoriaAudio={ctx:null,master:null,music:null,sfx:null,timer:null,beat:0,
+  ensure(){if(!this.ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;this.ctx=new C;this.master=this.ctx.createGain();this.music=this.ctx.createGain();this.sfx=this.ctx.createGain();this.master.gain.value=.72;this.music.gain.value=.18;this.sfx.gain.value=.5;this.music.connect(this.master);this.sfx.connect(this.master);this.master.connect(this.ctx.destination)}if(this.ctx.state==='suspended')this.ctx.resume();return true},
+  tone(freq,duration=.16,volume=.12,type='triangle',when=0,target='sfx'){if(!state.sound||!this.ensure())return;const t=this.ctx.currentTime+when,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(volume,t+.018);g.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(g);g.connect(this[target]);o.start(t);o.stop(t+duration+.03)},
+  effect(kind){const notes={click:[[420,.06,.055]],good:[[523,.11,.11],[659,.13,.1,.08],[784,.22,.1,.17]],bad:[[220,.14,.1],[165,.24,.09,.11]],item:[[659,.08,.08],[880,.12,.09,.07],[1047,.18,.08,.15]],gate:[[196,.2,.08],[294,.25,.09,.12],[392,.35,.1,.25]],boss:[[131,.18,.12],[196,.22,.1,.12],[262,.35,.1,.25]]}[kind]||[];notes.forEach(n=>this.tone(n[0],n[1],n[2],'triangle',n[3]||0))},
+  start(){if(!state.sound||this.timer||!this.ensure())return;const melody=[220,262,294,330,392,330,294,262,220,294,330,440,392,330,294,262],bass=[110,110,98,98,131,131,110,110];const tick=()=>{if(!state.sound)return;const i=this.beat++;this.tone(melody[i%melody.length],.32,.045,i%4===0?'sawtooth':'triangle',0,'music');if(i%2===0)this.tone(bass[Math.floor(i/2)%bass.length],.62,.038,'sine',0,'music');if(i%8===0)this.tone(55,.12,.035,'sine',0,'music')};tick();this.timer=setInterval(tick,360);document.querySelector('#soundBtn')?.classList.add('playing')},
+  stop(){clearInterval(this.timer);this.timer=null;document.querySelector('#soundBtn')?.classList.remove('playing')}
+};
+beep=function(good=true){vectoriaAudio.effect(good?'good':'bad')};
+document.querySelector('#soundBtn').onclick=()=>{state.sound=!state.sound;save();if(state.sound){vectoriaAudio.start();vectoriaAudio.effect('item')}else vectoriaAudio.stop();toast(state.sound?'เปิดเพลงและเอฟเฟ็กต์เสียงแล้ว':'ปิดเสียงแล้ว')};
+document.addEventListener('pointerdown',e=>{if(state.sound)vectoriaAudio.start();const b=e.target.closest('button');if(!b||b.id==='soundBtn')return;vectoriaAudio.effect(b.classList.contains('primary-btn')?'gate':'click')},{capture:true});
+window.addEventListener('blur',()=>{if(vectoriaAudio.ctx?.state==='running')vectoriaAudio.ctx.suspend()});
+window.addEventListener('focus',()=>{if(state.sound&&vectoriaAudio.timer)vectoriaAudio.ctx?.resume()});
 // Floor 4 boss: only allow graphing vectors that are actually perpendicular.
 // This keeps the angle diagram mathematically consistent (theta must be 90 degrees).
 const renderBossGraphBeforePerpendicularGuard = renderBossGraph;

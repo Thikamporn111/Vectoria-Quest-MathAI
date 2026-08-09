@@ -545,13 +545,14 @@ document.addEventListener('pointerdown',e=>{if(state.sound)vectoriaAudio.start()
 window.addEventListener('blur',()=>{if(vectoriaAudio.ctx?.state==='running')vectoriaAudio.ctx.suspend();vectoriaAudio.bgm?.pause()});
 window.addEventListener('focus',()=>{if(state.sound&&vectoriaAudio.timer){vectoriaAudio.ctx?.resume();vectoriaAudio.bgm?.play().catch(()=>{})}});
 
-const audioVersionKey='vectoria-audio-enabled-v2';
+const audioVersionKey='vectoria-audio-enabled-v3';
 if(!localStorage.getItem(audioVersionKey)){state.sound=true;localStorage.setItem(audioVersionKey,'1');save()}
 let musicVolume=Math.max(0,Math.min(1,Number(localStorage.getItem('vectoria-music-volume')??.5)));
 const decorateSoundButton=()=>{const b=document.querySelector('#soundBtn');if(!b)return;b.textContent=state.sound?'♫ เพลง':'🔇 ปิด';b.title=state.sound?'เพลงผจญภัยและเอฟเฟ็กต์เปิดอยู่':'กดเพื่อเปิดเพลงและเอฟเฟ็กต์';b.setAttribute('aria-label',b.title)};
 const updateTopbarBeforeAudio=updateTopbar;
 updateTopbar=function(){updateTopbarBeforeAudio();decorateSoundButton()};
 decorateSoundButton();
+setTimeout(()=>{if(state.sound)vectoriaAudio.start()},0);
 const soundButton=document.querySelector('#soundBtn');
 soundButton?.insertAdjacentHTML('afterend',`<label class="music-volume" title="ปรับระดับเสียงเพลง"><span>🔊</span><input id="musicVolume" type="range" min="0" max="100" value="${Math.round(musicVolume*100)}" aria-label="ระดับเสียงเพลง"><output id="musicVolumeValue">${Math.round(musicVolume*100)}%</output></label>`);
 document.querySelector('#musicVolume')?.addEventListener('input',e=>{musicVolume=Number(e.target.value)/100;localStorage.setItem('vectoria-music-volume',musicVolume);if(vectoriaAudio.bgm)vectoriaAudio.bgm.volume=musicVolume;document.querySelector('#musicVolumeValue').textContent=`${e.target.value}%`});

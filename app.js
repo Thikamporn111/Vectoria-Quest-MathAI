@@ -517,3 +517,36 @@ renderLesson=function(q){
   if(rows[2])rows[2].innerHTML=`คำนวณค่าใต้เครื่องหมายราก <span class="math-nowrap">√(9 + 16) = √25</span>`;
   if(rows[3])rows[3].innerHTML=`ถอดราก <span class="math-nowrap">√25 = <b>5</b></span>`;
 };
+// Floor 4 boss: only allow graphing vectors that are actually perpendicular.
+// This keeps the angle diagram mathematically consistent (theta must be 90 degrees).
+const renderBossGraphBeforePerpendicularGuard = renderBossGraph;
+renderBossGraph = function(q) {
+  renderBossGraphBeforePerpendicularGuard(q);
+  if (q.id !== 4) return;
+
+  const canvas = document.querySelector('#bossGraph');
+  if (!canvas) return;
+
+  canvas.addEventListener('click', event => {
+    const rawValues = ['bx', 'by', 'cx', 'cy'].map(id => document.querySelector(`#${id}`)?.value.trim() ?? '');
+    if (rawValues.some(value => value === '')) return;
+    const [bx, by, cx, cy] = rawValues.map(Number);
+    const result = document.querySelector('#bossGraphResult');
+
+    if (![bx, by, cx, cy].every(Number.isFinite)) return;
+
+    const aDotB = (-20 * bx) + (-21 * by);
+    const negativeADotC = (20 * cx) + (21 * cy);
+    if (aDotB === 0 && negativeADotC === 0) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (result) {
+      result.className = 'graph-result wrong';
+      result.textContent = aDotB !== 0
+        ? 'B ยังไม่ตั้งฉากกับ A จึงยังวาดกราฟไม่ได้'
+        : 'C ยังไม่ตั้งฉากกับ -A: ใช้ C = (-21, 20) แล้วมุมจะเป็น θ = 90°';
+    }
+    beep(false);
+  }, true);
+};

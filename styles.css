@@ -242,3 +242,10 @@ body{background:#071226}body::before{content:"";position:fixed;inset:0;backgroun
 body::before{background-image:linear-gradient(90deg,rgba(3,9,24,.97) 0%,rgba(3,9,24,.78) 33%,rgba(3,9,24,.08) 68%,rgba(3,9,24,.35) 100%),url('/Vectoria-Quest-MathAI/hero-party.png?v=2');z-index:0;pointer-events:none}
 body::after{z-index:0}
 .map-screen,.quest-screen,.game-screen{position:relative;z-index:1}
+/* Keep lessons readable and the playable canvas inside the visible viewport. */
+.lesson-step>div,.q4-step-card>div{min-width:0}
+.lesson-step p,.q4-step-card p,.q4-calc{overflow-wrap:anywhere}
+.game-frame{width:min(100%,calc((100vh - 205px)*16/9));min-width:0;margin-inline:auto}
+#gameCanvas{width:100%;height:auto}
+@media(max-height:720px){.game-screen{padding-top:8px}.game-hud{height:54px;margin-bottom:7px}.game-frame{width:min(100%,calc((100vh - 145px)*16/9))}.game-help{display:none}}
+@media(max-width:560px){#questContent{padding:20px 14px}.lesson-step{grid-template-columns:30px minmax(0,1fr);gap:8px}.lesson-step span{width:26px;height:26px}.q4-step-card{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:12px 10px}.q4-calc{padding:10px 8px;font-size:15px}.q4-rule strong{font-size:17px}.game-frame{width:100%}}

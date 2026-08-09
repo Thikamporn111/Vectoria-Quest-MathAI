@@ -289,3 +289,7 @@ body:has(.game-screen) .universal-scratch.in-game{position:relative!important;in
 
 /* The pause/save screen uses a dungeon checkpoint rather than a character. */
 .exit-character-art{background-image:linear-gradient(90deg,transparent 72%,#0b3875 100%),url('save-crystal-dungeon.png?v=1')!important;background-size:cover!important;background-position:center!important}
+
+/* Formula chips inside lesson steps are rectangular and never inherit the
+   circular style used by the numbered step badge. */
+.lesson-step .math-nowrap{display:inline-flex!important;align-items:center!important;width:max-content!important;max-width:100%!important;height:auto!important;min-height:34px;padding:6px 10px!important;border:1px solid var(--cyan)!important;border-radius:5px!important;line-height:1.35!important;vertical-align:middle;overflow:visible}

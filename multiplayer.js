@@ -25,6 +25,7 @@
     players: [],
     channel: null,
     selectedAvatar: 'knight',
+    selectedPlayerCount: 5,
     lastPositionAt: 0,
     lastDbPositionAt: 0,
     lastPosition: null,
@@ -63,6 +64,12 @@
             <div class="mp-avatar-grid" id="mpAvatarGrid">
               ${Object.entries(avatars).map(([id,a],index) => `<button type="button" class="mp-avatar ${id==='knight'?'selected':''}" data-avatar="${id}" style="--avatar:${a.color};--sprite-index:${index}" aria-label="เลือก ${a.name} ${a.role}"><span class="mp-avatar-art" aria-hidden="true"></span><span class="mp-avatar-info"><i>${a.icon}</i><b>${a.name}</b><small>${a.role}</small></span><em>เลือกตัวนี้</em></button>`).join('')}
             </div>
+            <div class="mp-size-picker">
+              <div><span class="mp-label">จำนวนผู้เล่นในห้อง</span><small>ห้องจะเริ่มได้เมื่อสมาชิกครบและทุกคนกดพร้อม</small></div>
+              <div class="mp-size-options" id="mpSizeOptions" role="group" aria-label="เลือกจำนวนผู้เล่น">
+                ${[1,2,3,4,5].map(n=>`<button type="button" data-size="${n}" class="${n===this.selectedPlayerCount?'selected':''}" aria-pressed="${n===this.selectedPlayerCount}">${n} คน</button>`).join('')}
+              </div>
+            </div>
             <div class="mp-actions">
               <button class="mp-main-action" id="mpCreateRoom">＋ สร้างห้องใหม่</button>
               <div class="mp-join-row"><input id="mpRoomCode" maxlength="6" autocomplete="off" placeholder="รหัสห้อง 6 ตัว"><button id="mpJoinRoom">เข้าห้อง</button></div>
@@ -74,6 +81,14 @@
       document.querySelectorAll('[data-avatar]').forEach(btn => btn.onclick = () => {
         this.selectedAvatar = btn.dataset.avatar;
         document.querySelectorAll('[data-avatar]').forEach(x => x.classList.toggle('selected', x === btn));
+      });
+      document.querySelectorAll('[data-size]').forEach(btn => btn.onclick = () => {
+        this.selectedPlayerCount = Number(btn.dataset.size);
+        document.querySelectorAll('[data-size]').forEach(x => {
+          const selected=x===btn;
+          x.classList.toggle('selected',selected);
+          x.setAttribute('aria-pressed',String(selected));
+        });
       });
       document.querySelector('#mpCreateRoom').onclick = () => this.createRoom();
       document.querySelector('#mpJoinRoom').onclick = () => this.joinRoom();
@@ -105,6 +120,7 @@
       const messages = {
         ROOM_NOT_FOUND:'ไม่พบห้องนี้ กรุณาตรวจรหัสอีกครั้ง', ROOM_FULL:'ห้องเต็มแล้ว (สูงสุด 5 คน)',
         GAME_ALREADY_STARTED:'ห้องนี้เริ่มเกมไปแล้ว', NAME_ALREADY_USED:'ชื่อนี้มีคนใช้ในห้องแล้ว',
+        ROOM_NOT_FULL:'ต้องรอสมาชิกให้ครบตามจำนวนที่เลือกก่อน',
         PLAYERS_NOT_READY:'สมาชิกทุกคนต้องกดพร้อมก่อน', HOST_ONLY:'เฉพาะหัวหน้าห้องเท่านั้น'
       };
       const key = Object.keys(messages).find(k => raw.includes(k));
@@ -117,7 +133,7 @@
       try {
         const profile = this.getProfile(), token = this.newToken();
         this.setBusy(true, 'กำลังสร้างห้องฟรี...');
-        const { data, error } = await client.rpc('create_game_room', { p_display_name:profile.name, p_avatar_id:profile.avatar, p_session_token:token });
+        const { data, error } = await client.rpc('create_game_room', { p_display_name:profile.name, p_avatar_id:profile.avatar, p_session_token:token, p_max_players:this.selectedPlayerCount });
         if (error) throw error;
         const row = data[0];
         this.session = { roomCode:row.room_code, roomId:row.room_id, playerId:row.player_id, token };
@@ -184,15 +200,16 @@
 
     renderLobbyPlayers() {
       const list = document.querySelector('#mpPlayerList'); if (!list) return;
-      document.querySelector('#mpCount').textContent = `${this.players.length} / 5 คน`;
+      const capacity=Math.max(1,Math.min(5,Number(this.room?.max_players)||5));
+      document.querySelector('#mpCount').textContent = `${this.players.length} / ${capacity} คน`;
       list.innerHTML = this.players.map(p => {
         const a=avatars[p.avatar_id]||avatars.knight, mine=p.id===this.session.playerId, avatarIndex=Math.max(0,Object.keys(avatars).indexOf(p.avatar_id));
         return `<article class="mp-player ${p.is_ready?'ready':''} ${mine?'mine':''}" style="--avatar:${a.color};--sprite-index:${avatarIndex}"><i class="mp-player-avatar"><span>${a.icon}</span></i><div><b>${escapeHtml(p.display_name)} ${mine?'<em>(คุณ)</em>':''}</b><small>${a.role}${p.is_host?' · 👑 หัวหน้าห้อง':''}</small></div><span>${p.is_ready?'พร้อม ✓':'กำลังเตรียมตัว'}</span></article>`;
-      }).join('') + Array.from({length:Math.max(0,5-this.players.length)},()=>'<article class="mp-player empty"><i>＋</i><div><b>รอเพื่อนเข้าห้อง</b><small>ว่าง</small></div></article>').join('');
-      const me=this.players.find(p=>p.id===this.session.playerId), allReady=this.players.length>0&&this.players.every(p=>p.is_ready);
+      }).join('') + Array.from({length:Math.max(0,capacity-this.players.length)},()=>'<article class="mp-player empty"><i>＋</i><div><b>รอเพื่อนเข้าห้อง</b><small>ว่าง</small></div></article>').join('');
+      const me=this.players.find(p=>p.id===this.session.playerId), roomFull=this.players.length===capacity, allReady=roomFull&&this.players.every(p=>p.is_ready);
       const ready=document.querySelector('#mpReadyBtn'), start=document.querySelector('#mpStartBtn');
       if(ready){ready.textContent=me?.is_ready?'ยกเลิกพร้อม':'✓ ฉันพร้อม';ready.classList.toggle('active',!!me?.is_ready)}
-      if(start){start.hidden=!me?.is_host;start.disabled=!allReady;start.textContent=allReady?'เริ่มเกมทั้งปาร์ตี้ →':'รอทุกคนกดพร้อม';}
+      if(start){start.hidden=!me?.is_host;start.disabled=!allReady;start.textContent=allReady?'เริ่มเกมทั้งปาร์ตี้ →':roomFull?'รอทุกคนกดพร้อม':`รอสมาชิก ${this.players.length}/${capacity} คน`;}
     },
 
     async toggleReady() {
@@ -255,7 +272,8 @@
       let bar=document.querySelector('#mpPartyBar');
       if(!this.session||!this.gameStarted){bar?.remove();return;}
       if(!bar){bar=document.createElement('div');bar.id='mpPartyBar';bar.className='mp-party-bar';document.body.append(bar);}
-      bar.innerHTML=`<b>ปาร์ตี้ ${this.players.length}/5</b>${this.players.map(p=>{const a=avatars[p.avatar_id]||avatars.knight;return `<span title="${escapeHtml(p.display_name)}" style="--avatar:${a.color}">${a.icon}<i>${Math.max(0,p.progress||0)}/5</i></span>`}).join('')}<button id="mpExitParty" title="ออกจากห้อง">ออก</button>`;
+      const capacity=Math.max(1,Math.min(5,Number(this.room?.max_players)||5));
+      bar.innerHTML=`<b>ปาร์ตี้ ${this.players.length}/${capacity}</b>${this.players.map(p=>{const a=avatars[p.avatar_id]||avatars.knight;return `<span title="${escapeHtml(p.display_name)}" style="--avatar:${a.color}">${a.icon}<i>${Math.max(0,p.progress||0)}/5</i></span>`}).join('')}<button id="mpExitParty" title="ออกจากห้อง">ออก</button>`;
       document.querySelector('#mpExitParty').onclick=()=>confirm('ออกจากห้องปาร์ตี้หรือไม่?')&&this.leaveRoom();
     },
 

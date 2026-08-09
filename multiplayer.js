@@ -54,7 +54,6 @@
             <span class="mp-kicker">VECTORIA PARTY</span>
             <h1>เลือกนักผจญภัย<br><em>ก่อนเข้าดันเจี้ยน</em></h1>
             <p>ตั้งชื่อ เลือกตัวละคร แล้วสร้างห้องหรือเข้าร่วมกับเพื่อนได้สูงสุด 5 คน</p>
-            <div class="mp-free-badge">✓ ระบบห้อง Free Plan · จำกัดข้อมูลเพื่อประหยัดโควตา</div>
           </div>
           <div class="mp-setup-card">
             <div class="mp-name-block"><label class="mp-label" for="mpName">ชื่อของนักผจญภัย</label>

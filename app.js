@@ -536,7 +536,7 @@ const vectoriaAudio={ctx:null,master:null,music:null,sfx:null,timer:null,beat:0,
   ensure(){if(!this.ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;this.ctx=new C;this.master=this.ctx.createGain();this.music=this.ctx.createGain();this.sfx=this.ctx.createGain();this.master.gain.value=.95;this.music.gain.value=.48;this.sfx.gain.value=.85;this.music.connect(this.master);this.sfx.connect(this.master);this.master.connect(this.ctx.destination)}if(this.ctx.state==='suspended')this.ctx.resume();return true},
   tone(freq,duration=.16,volume=.12,type='triangle',when=0,target='sfx'){if(!state.sound||!this.ensure())return;const t=this.ctx.currentTime+when,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(volume,t+.018);g.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(g);g.connect(this[target]);o.start(t);o.stop(t+duration+.03)},
   effect(kind){const notes={click:[[420,.06,.055]],good:[[523,.11,.11],[659,.13,.1,.08],[784,.22,.1,.17]],bad:[[220,.14,.1],[165,.24,.09,.11]],item:[[659,.08,.08],[880,.12,.09,.07],[1047,.18,.08,.15]],gate:[[196,.2,.08],[294,.25,.09,.12],[392,.35,.1,.25]],boss:[[131,.18,.12],[196,.22,.1,.12],[262,.35,.1,.25]]}[kind]||[];notes.forEach(n=>this.tone(n[0],n[1],n[2],'triangle',n[3]||0))},
-  start(){if(!state.sound||this.timer)return;if(!this.bgm){this.bgm=new Audio('adventure-theme.mp3?v=1');this.bgm.loop=true;this.bgm.volume=.5;this.bgm.preload='auto'}this.timer=true;this.bgm.play().catch(()=>{this.timer=null});document.querySelector('#soundBtn')?.classList.add('playing')},
+  start(){if(!state.sound||this.timer)return;if(!this.bgm){this.bgm=new Audio('adventure-theme.mp3?v=1');this.bgm.loop=true;this.bgm.preload='auto'}this.bgm.volume=typeof musicVolume==='number'?musicVolume:.5;this.timer=true;this.bgm.play().catch(()=>{this.timer=null});document.querySelector('#soundBtn')?.classList.add('playing')},
   stop(){this.bgm?.pause();this.timer=null;document.querySelector('#soundBtn')?.classList.remove('playing')}
 };
 beep=function(good=true){vectoriaAudio.effect(good?'good':'bad')};
@@ -547,10 +547,14 @@ window.addEventListener('focus',()=>{if(state.sound&&vectoriaAudio.timer){vector
 
 const audioVersionKey='vectoria-audio-enabled-v2';
 if(!localStorage.getItem(audioVersionKey)){state.sound=true;localStorage.setItem(audioVersionKey,'1');save()}
+let musicVolume=Math.max(0,Math.min(1,Number(localStorage.getItem('vectoria-music-volume')??.5)));
 const decorateSoundButton=()=>{const b=document.querySelector('#soundBtn');if(!b)return;b.textContent=state.sound?'♫ เพลง':'🔇 ปิด';b.title=state.sound?'เพลงผจญภัยและเอฟเฟ็กต์เปิดอยู่':'กดเพื่อเปิดเพลงและเอฟเฟ็กต์';b.setAttribute('aria-label',b.title)};
 const updateTopbarBeforeAudio=updateTopbar;
 updateTopbar=function(){updateTopbarBeforeAudio();decorateSoundButton()};
 decorateSoundButton();
+const soundButton=document.querySelector('#soundBtn');
+soundButton?.insertAdjacentHTML('afterend',`<label class="music-volume" title="ปรับระดับเสียงเพลง"><span>🔊</span><input id="musicVolume" type="range" min="0" max="100" value="${Math.round(musicVolume*100)}" aria-label="ระดับเสียงเพลง"><output id="musicVolumeValue">${Math.round(musicVolume*100)}%</output></label>`);
+document.querySelector('#musicVolume')?.addEventListener('input',e=>{musicVolume=Number(e.target.value)/100;localStorage.setItem('vectoria-music-volume',musicVolume);if(vectoriaAudio.bgm)vectoriaAudio.bgm.volume=musicVolume;document.querySelector('#musicVolumeValue').textContent=`${e.target.value}%`});
 const toastBeforeAudio=toast;
 toast=function(msg){toastBeforeAudio(msg);if(!state.sound)return;if(/เก็บ|ประกอบสูตรสำเร็จ/.test(msg))vectoriaAudio.effect('item');else if(/ประตู.*เปิด|สำเร็จ/.test(msg))vectoriaAudio.effect('gate');else if(/โดน|ยังไม่ถูก|ผิด/.test(msg))vectoriaAudio.effect('bad')};
 let lastFootstep=0;

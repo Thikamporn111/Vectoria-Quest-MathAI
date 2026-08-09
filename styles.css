@@ -294,3 +294,14 @@ body:has(.game-screen) .universal-scratch.in-game{position:relative!important;in
    circular style used by the numbered step badge. */
 .lesson-step .math-nowrap{display:inline-flex!important;align-items:center!important;width:max-content!important;max-width:100%!important;height:auto!important;min-height:34px;padding:6px 10px!important;border:1px solid var(--cyan)!important;border-radius:5px!important;line-height:1.35!important;vertical-align:middle;overflow:visible}
 #bossGlyph{font-size:clamp(64px,7vw,90px);line-height:1;font-family:"Cambria Math","Times New Roman",serif;letter-spacing:-.06em}
+
+/* Movable and resizable scratch notebook window. */
+.scratch-panel{min-width:340px;min-height:420px;resize:both;overflow:auto}
+.scratch-panel header{position:sticky;top:-14px;z-index:3;margin:-14px -14px 10px;padding:12px 14px;background:linear-gradient(90deg,#0d315d,#0a2242);cursor:move;touch-action:none;user-select:none}
+.scratch-panel header>b{display:flex;align-items:center;gap:9px}.scratch-panel header>b small{color:#8ccde8;font-size:.68rem;font-weight:600}
+.scratch-window-actions{display:flex;gap:6px}.scratch-window-actions button{flex:0 0 38px}
+.scratch-panel.minimized{width:300px!important;height:auto!important;min-width:260px;min-height:0;resize:none;overflow:hidden}
+.scratch-panel.minimized>:not(header){display:none!important}.scratch-panel.minimized header{margin-bottom:-14px}
+.scratch-panel.maximized{max-width:none!important;max-height:none!important;resize:none}
+.universal-scratch.scratch-floating{position:fixed!important;right:auto!important;bottom:auto!important;margin:0!important;padding:0!important;width:auto!important;display:block!important;z-index:1005}
+@media(max-width:520px){.scratch-panel{min-width:0;resize:vertical}.scratch-panel header>b small{display:none}}

@@ -636,3 +636,26 @@ function unlockAdventureFromMovement(event) {
 }
 document.addEventListener('keydown', unlockAdventureFromMovement, true);
 document.addEventListener('pointerdown', unlockAdventureFromMovement, true);
+
+// The final boss always uses the fixed vectors shown in its own question.
+// Accept equivalent numeric forms such as -1, −1 and -841/841.
+function parseFinalBossDot(text) {
+  const value = String(text ?? '').trim().replace(/−/g, '-').replace(/÷/g, '/');
+  if (!value) return NaN;
+  if (!value.includes('/')) return Number(value);
+  const parts = value.split('/').map(part => Number(part.trim()));
+  return parts.length === 2 && Number.isFinite(parts[0]) && Number.isFinite(parts[1]) && parts[1] !== 0
+    ? parts[0] / parts[1]
+    : NaN;
+}
+
+const renderChallengeBeforeFinalBossValidation = renderChallenge;
+renderChallenge = function(q) {
+  if (q.id === 5) {
+    q.validate = values => {
+      const answer = parseFinalBossDot(values.dot);
+      return Number.isFinite(answer) && Math.abs(answer + 1) < .001;
+    };
+  }
+  renderChallengeBeforeFinalBossValidation(q);
+};

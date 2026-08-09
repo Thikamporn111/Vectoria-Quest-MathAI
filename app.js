@@ -495,7 +495,7 @@ function showAdventure(forcedFloor=null){
     ctx.fillStyle='rgba(3,12,30,.82)';ctx.fillRect(18,18,360,47);ctx.fillStyle='white';ctx.font='600 17px Noto Sans Thai';ctx.textAlign='left';ctx.fillText(`◆ ${cfg.item} ${gameWorld.collected}/${cfg.goal}     ♥ พลัง ${state.hp}/5`,33,48)}
   function loop(){if(gameWorld.transitioning)return;update();if(gameWorld.transitioning)return;draw();gameLoop=requestAnimationFrame(loop)}loop();app.focus()
 }
-document.querySelector('#brandBtn').onclick=()=>showAdventure();document.querySelector('#soundBtn').onclick=()=>{state.sound=!state.sound;save();toast(state.sound?'เปิดเสียงแล้ว':'ปิดเสียงแล้ว')};setupUniversalScratchpad();updateTopbar();showAdventure();
+document.querySelector('#brandBtn').onclick=()=>showMap();document.querySelector('#soundBtn').onclick=()=>{state.sound=!state.sound;save();toast(state.sound?'เปิดเสียงแล้ว':'ปิดเสียงแล้ว')};setupUniversalScratchpad();updateTopbar();showMap();
 /* Keep the perpendicular lesson wording and proof explicit for beginners. */
 const renderQ4LessonResponsive=renderQ4Lesson;
 renderQ4Lesson=function(){

@@ -517,6 +517,17 @@ renderLesson=function(q){
   if(rows[2])rows[2].innerHTML=`คำนวณค่าใต้เครื่องหมายราก <span class="math-nowrap">√(9 + 16) = √25</span>`;
   if(rows[3])rows[3].innerHTML=`ถอดราก <span class="math-nowrap">√25 = <b>5</b></span>`;
 };
+
+// Keep the short opposite-vector result together.  The vector arrow is an
+// inline element, so the browser must not wrap between the minus sign, P,
+// and its coordinates on narrow screens.
+const renderLessonBeforeStableOppositeVector=renderLesson;
+renderLesson=function(q){
+  renderLessonBeforeStableOppositeVector(q);
+  if(q.id!==2)return;
+  const rows=document.querySelectorAll('.lesson-steps .lesson-step>div');
+  if(rows[2])rows[2].innerHTML='ดังนั้น <span class="math-nowrap opposite-vector-equation">-<i class="math-vector">P</i> = <b>(-3, -2)</b></span>';
+};
 // Floor 4 boss: only allow graphing vectors that are actually perpendicular.
 // This keeps the angle diagram mathematically consistent (theta must be 90 degrees).
 const renderBossGraphBeforePerpendicularGuard = renderBossGraph;

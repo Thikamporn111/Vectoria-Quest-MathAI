@@ -187,8 +187,8 @@
       const list = document.querySelector('#mpPlayerList'); if (!list) return;
       document.querySelector('#mpCount').textContent = `${this.players.length} / 5 คน`;
       list.innerHTML = this.players.map(p => {
-        const a=avatars[p.avatar_id]||avatars.knight, mine=p.id===this.session.playerId;
-        return `<article class="mp-player ${p.is_ready?'ready':''} ${mine?'mine':''}" style="--avatar:${a.color}"><i>${a.icon}</i><div><b>${escapeHtml(p.display_name)} ${mine?'<em>(คุณ)</em>':''}</b><small>${a.role}${p.is_host?' · 👑 หัวหน้าห้อง':''}</small></div><span>${p.is_ready?'พร้อม ✓':'กำลังเตรียมตัว'}</span></article>`;
+        const a=avatars[p.avatar_id]||avatars.knight, mine=p.id===this.session.playerId, avatarIndex=Math.max(0,Object.keys(avatars).indexOf(p.avatar_id));
+        return `<article class="mp-player ${p.is_ready?'ready':''} ${mine?'mine':''}" style="--avatar:${a.color};--sprite-index:${avatarIndex}"><i class="mp-player-avatar"><span>${a.icon}</span></i><div><b>${escapeHtml(p.display_name)} ${mine?'<em>(คุณ)</em>':''}</b><small>${a.role}${p.is_host?' · 👑 หัวหน้าห้อง':''}</small></div><span>${p.is_ready?'พร้อม ✓':'กำลังเตรียมตัว'}</span></article>`;
       }).join('') + Array.from({length:Math.max(0,5-this.players.length)},()=>'<article class="mp-player empty"><i>＋</i><div><b>รอเพื่อนเข้าห้อง</b><small>ว่าง</small></div></article>').join('');
       const me=this.players.find(p=>p.id===this.session.playerId), allReady=this.players.length>0&&this.players.every(p=>p.is_ready);
       const ready=document.querySelector('#mpReadyBtn'), start=document.querySelector('#mpStartBtn');
@@ -218,7 +218,12 @@
 
     startGame() {
       if(this.gameStarted)return;
-      this.gameStarted=true; showMap(); this.renderPartyBar();
+      this.gameStarted=true; this.cleanupChannel();
+      const app=document.querySelector('#app');
+      app.innerHTML='<section class="mp-launch-screen"><div class="mp-launch-crest">⚔</div><span>สมาชิกทุกคนพร้อมแล้ว</span><h1>ออกเดินทางสู่แผนที่!</h1><strong id="mpLaunchCount">3</strong><p>กำลังเปิดประตูดันเจี้ยนให้ทั้งปาร์ตี้</p></section>';
+      if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('gate');
+      const count=document.querySelector('#mpLaunchCount');let value=3;
+      const timer=setInterval(()=>{value--;if(value>0){count.textContent=value;if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('click');return}clearInterval(timer);count.textContent='GO!';if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('portal');setTimeout(()=>{showMap();this.renderPartyBar();this.subscribe();this.startHeartbeat()},450)},450);
     },
 
     async leaveRoom() {

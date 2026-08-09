@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260809-4" />
+  <link rel="stylesheet" href="styles.css?v=20260809-5" />
   <link rel="stylesheet" href="graph.css" />
   <link rel="stylesheet" href="multiplayer.css?v=20260809-1" />
 </head>
@@ -20,6 +20,8 @@
     <div class="hero-stats" aria-label="สถานะนักผจญภัย">
       <div title="พลังชีวิต"><span>♥</span><b id="hpValue">5</b></div>
       <div title="คริสตัลความรู้"><span>◆</span><b id="xpValue">0</b></div>
+      <button class="game-save-btn" id="saveGameBtn" type="button" aria-label="บันทึกเกม">💾 เซฟ</button>
+      <button class="game-exit-btn" id="exitGameBtn" type="button" aria-label="ออกจากเกม">↪ ออก</button>
       <button class="sound-btn" id="soundBtn" aria-label="เปิดหรือปิดเสียง">♪</button>
     </div>
   </header>
@@ -94,7 +96,7 @@
   </template>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.91.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
-<script src="app.js?v=20260809-22"></script>
+  <script src="app.js?v=20260809-23"></script>
 <script src="multiplayer.js?v=20260809-1"></script>
 </body>
 </html>

@@ -781,3 +781,47 @@ renderGraphTrainer = function(q) {
   wrap.append(canvas);
   wrap.insertAdjacentHTML('beforeend', '<b class="practice-axis-name axis-x">แกน x</b><b class="practice-axis-name axis-y">แกน y</b>');
 };
+
+// Save controls: progress is saved automatically, while these controls give
+// players a clear manual save and a safe way back to the character screen.
+function showSaveConfirmation(message='บันทึกความคืบหน้าแล้ว') {
+  const button = document.querySelector('#saveGameBtn');
+  if (!button) return;
+  const oldText = button.textContent;
+  button.textContent = '✓ เซฟแล้ว';
+  button.classList.add('saved');
+  button.title = `${message} · ${new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}`;
+  clearTimeout(showSaveConfirmation.timer);
+  showSaveConfirmation.timer = setTimeout(() => {
+    button.textContent = oldText;
+    button.classList.remove('saved');
+  }, 1800);
+}
+
+function saveGameNow() {
+  save();
+  window.vectoriaMultiplayer?.syncProgress?.(state.completed.length);
+  showSaveConfirmation();
+  toast('เซฟเกมเรียบร้อยแล้ว กลับมาเล่นต่อได้ทุกเมื่อ');
+}
+
+async function exitGameSafely() {
+  if (!confirm('เซฟความคืบหน้าและออกไปหน้าเลือกตัวละครหรือไม่?')) return;
+  saveGameNow();
+  if (typeof gameWorld !== 'undefined') gameWorld.transitioning = true;
+  if (typeof gameLoop !== 'undefined') cancelAnimationFrame(gameLoop);
+  window.onkeydown = null;
+  window.onkeyup = null;
+  vectoriaAudio?.stop?.();
+  const multiplayer = window.vectoriaMultiplayer;
+  if (multiplayer?.session) await multiplayer.leaveRoom();
+  else if (multiplayer?.showEntrance) {
+    multiplayer.gameStarted = false;
+    multiplayer.showEntrance();
+  } else showMap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelector('#saveGameBtn')?.addEventListener('click', saveGameNow);
+document.querySelector('#exitGameBtn')?.addEventListener('click', exitGameSafely);
+window.addEventListener('pagehide', () => save());

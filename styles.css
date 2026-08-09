@@ -305,3 +305,6 @@ body:has(.game-screen) .universal-scratch.in-game{position:relative!important;in
 .scratch-panel.maximized{max-width:none!important;max-height:none!important;resize:none}
 .universal-scratch.scratch-floating{position:fixed!important;right:auto!important;bottom:auto!important;margin:0!important;padding:0!important;width:auto!important;display:block!important;z-index:1005}
 @media(max-width:520px){.scratch-panel{min-width:0;resize:vertical}.scratch-panel header>b small{display:none}}
+
+.practice-paper-tools{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}.practice-paper-tools button{border-radius:8px!important}.practice-paper-tools button.active{border-color:#d2a916!important;background:#fff1a4!important;color:#533d00!important;box-shadow:0 0 0 2px rgba(255,215,35,.22)}.practice-paper-tools button[data-paper-tool$="highlight"]{background:rgba(255,222,51,.18)}.practice-paper-tools button[data-paper-tool$="highlight"].active{background:rgba(255,222,51,.42)!important}
+@media(max-width:700px){.practice-paper-tools{justify-content:flex-start}.paper-label{align-items:flex-start;flex-direction:column}}

@@ -477,7 +477,25 @@ function showAdventure(forcedFloor=null){
   document.querySelector('#actionBtn').onclick=()=>tryPortal();
   const down=e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(e.key))e.preventDefault();gameKeys[e.key]=true};const up=e=>gameKeys[e.key]=false;
   window.onkeydown=down;window.onkeyup=up;document.querySelectorAll('.mobile-pad button').forEach(b=>{const k=b.dataset.key;let pressedAt=0,releaseTimer=0,movedByHold=false;b.onpointerdown=e=>{e.preventDefault();clearTimeout(releaseTimer);pressedAt=Date.now();movedByHold=false;gameKeys[k]=true;b.setPointerCapture?.(e.pointerId)};const release=()=>{const held=Date.now()-pressedAt;movedByHold=held>150;const wait=Math.max(0,120-held);clearTimeout(releaseTimer);releaseTimer=setTimeout(()=>gameKeys[k]=false,wait)};b.onpointerup=b.onpointercancel=release;b.onclick=e=>{e.preventDefault();if(movedByHold)return;const amount=34;if(k==='ArrowLeft')hero.x=Math.max(35,hero.x-amount);if(k==='ArrowRight')hero.x=Math.min(1245,hero.x+amount);if(k==='ArrowUp')hero.y=Math.max(55,hero.y-amount);if(k==='ArrowDown')hero.y=Math.min(685,hero.y+amount)}});
-  function tryPortal(){if(gameWorld.transitioning)return;const gateX=floor===1?1280-portal.x:portal.x,gateY=floor===1?720-portal.y:portal.y;if(Math.hypot(hero.x-gateX,hero.y-gateY)<125){if(portal.open){gameWorld.transitioning=true;cancelAnimationFrame(gameLoop);window.onkeydown=null;window.onkeyup=null;openQuest(floor,0)}else toast(`เก็บ${cfg.item}ให้ครบ ${cfg.goal} ก่อน!`)}}
+  function enterPortal(gateX,gateY){
+    if(gameWorld.transitioning)return;
+    gameWorld.transitioning=true;gameKeys={};window.onkeydown=null;window.onkeyup=null;
+    cancelAnimationFrame(gameLoop);vectoriaAudio?.effect?.('portal');
+    document.querySelector('#missionText').textContent='กำลังเดินเข้าสู่ประตู…';
+    canvas.classList.add('entering-portal');
+    const startX=hero.x,startY=hero.y,startRadius=hero.r,start=performance.now(),duration=900;
+    const animateEntry=now=>{
+      const progress=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-progress,3);
+      hero.x=startX+(gateX-startX)*ease;hero.y=startY+(gateY-startY)*ease;
+      hero.r=Math.max(5,startRadius*(1-ease*.82));
+      draw();
+      if(progress<1){gameLoop=requestAnimationFrame(animateEntry);return}
+      canvas.classList.add('portal-entered');
+      setTimeout(()=>{canvas.classList.remove('entering-portal','portal-entered');openQuest(floor,0)},280);
+    };
+    gameLoop=requestAnimationFrame(animateEntry);
+  }
+  function tryPortal(){if(gameWorld.transitioning)return;const gateX=floor===1?1280-portal.x:portal.x,gateY=floor===1?720-portal.y:portal.y;if(Math.hypot(hero.x-gateX,hero.y-gateY)<115){if(portal.open)enterPortal(gateX,gateY);else toast(`เก็บ${cfg.item}ให้ครบ ${cfg.goal} ก่อน!`)}}
   function update(){if(dialog.style.display!=='none')return;let dx=0,dy=0;if(gameKeys.ArrowLeft||gameKeys.a||gameKeys.A)dx--;if(gameKeys.ArrowRight||gameKeys.d||gameKeys.D)dx++;if(gameKeys.ArrowUp||gameKeys.w||gameKeys.W)dy--;if(gameKeys.ArrowDown||gameKeys.s||gameKeys.S)dy++;if(dx&&dy){dx*=.707;dy*=.707}hero.x=Math.max(35,Math.min(1245,hero.x+dx*hero.speed));hero.y=Math.max(55,Math.min(685,hero.y+dy*hero.speed));hero.flash=Math.max(0,hero.flash-1);
     crystals.forEach((c,i)=>{if(!c.got&&Math.hypot(hero.x-c.x,hero.y-c.y)<48){if((floor===2||floor===4)&&i!==gameWorld.collected){toast(`ยังข้ามขั้นไม่ได้ — ตามหา ${cfg.steps[gameWorld.collected]} ก่อน`);return}c.got=true;gameWorld.collected++;state.xp+=15;save();beep(true);toast(floor===1?`A และ -A เก็บเศษกระจกคู่ที่ ${gameWorld.collected} สำเร็จ!`:floor===2||floor===4?`ประกอบสูตรสำเร็จ: ${cfg.steps[i]}`:`เก็บ${cfg.item}ได้!`);document.querySelector('#missionText').textContent=floor===2?`สูตรขนาด ${gameWorld.collected}/4 · ${cfg.steps.slice(0,gameWorld.collected).join(' → ')}`:floor===4?`สูตรเวกเตอร์หนึ่งหน่วย ${gameWorld.collected}/5 · ${cfg.steps[i]}`:`เก็บ${cfg.item} ${gameWorld.collected} / ${cfg.goal}`;if(gameWorld.collected===cfg.goal){portal.open=true;document.querySelector('#missionText').textContent=floor===2?'คำนวณได้ |A| = 29 · ประตูแมกนิทูนเปิดแล้ว!':floor===4?'คำนวณได้ B̂ · Ĉ = -1 · ประตูดอทโปรดักต์เปิดแล้ว!':'ประตูบอสเปิดแล้ว!';toast(floor===2?'สำเร็จ! √841 = 29 — ความยาวเวกเตอร์กลับคืนมาแล้ว':floor===4?'สำเร็จ! dot product = -1 — เวกเตอร์ชี้ตรงข้ามกัน':'ประตูบอสเปิดแล้ว — ไปทางขวาบน!')}}});
     enemies.forEach(e=>{e.x+=e.vx;e.y+=e.vy;if(e.x<180||e.x>1080)e.vx*=-1;if(e.y<150||e.y>620)e.vy*=-1;if(Date.now()-gameWorld.lastHit>1100&&Math.hypot(hero.x-e.x,hero.y-e.y)<52){gameWorld.lastHit=Date.now();hero.flash=18;state.hp=Math.max(1,state.hp-1);save();beep(false);hero.x=Math.max(55,hero.x-70);toast('โดนมอนสเตอร์เงา! พลัง -1')}});if(portal.open)tryPortal()}

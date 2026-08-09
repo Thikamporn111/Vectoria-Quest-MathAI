@@ -935,6 +935,16 @@ renderQ4Lesson=function(){
       <div class="q4-rule-check"><b>ตรวจคำตอบทุกครั้งด้วย Dot Product</b><span>(x, y) · (y, -x) = xy - xy = 0</span><small>เมื่อผลคูณจุดเท่ากับ 0 และทั้งคู่ไม่ใช่เวกเตอร์ศูนย์ จึงตั้งฉากกัน</small></div>
       <button type="button" class="primary-btn" id="q4RuleModalOkay">เข้าใจแล้ว</button>
     </div></div>`);
+  /* Show each value once and teach magnitude before using it in the angle formula. */
+  const cards=document.querySelectorAll('.q4-step-card');
+  if(cards[1])cards[1].querySelector('div').innerHTML=`<h3>ตรวจว่า A ตั้งฉากกับ B จริงไหม</h3>
+    <p>เราต้องรู้ขนาดของเวกเตอร์ก่อน จึงค่อยนำไปแทนในสูตรที่เชื่อม Dot Product กับมุม</p>
+    <div class="q4-calc q4-ordered-proof">
+      <section><b>1) หาขนาดของ A และ B ก่อน</b><span>สูตรหาขนาดของเวกเตอร์</span><strong>|V| = √(Vₓ² + Vᵧ²)</strong><span>|A| = √(4² + (-3)²)</span><span>|A| = √(16 + 9) = √25 = <b>5</b></span><span>|B| = √((-3)² + (-4)²)</span><span>|B| = √(9 + 16) = √25 = <b>5</b></span></section>
+      <section><b>2) หา A · B ด้วยสูตร Dot Product</b><strong>A · B = AₓBₓ + AᵧBᵧ</strong><span>A · B = (4)(-3) + (-3)(-4)</span><span>A · B = -12 + 12</span><span>A · B = <b>0</b></span></section>
+      <section><b>3) แทนค่าลงในสูตรที่เชื่อมกับมุม</b><strong>A · B = |A||B| cos θ</strong><span>0 = (5)(5) cos θ</span><span>0 = 25 cos θ</span><span>cos θ = 0</span><span>θ = <b>90°</b></span></section>
+    </div><p>ดังนั้น A ตั้งฉากกับ B จริง หรือ <b>A ⟂ B</b></p>`;
+  document.querySelectorAll('.q4-clean .cos-in-step,.q4-clean .pair-cos').forEach(block=>block.remove());
   const modal=document.querySelector('#q4RuleModal');
   const openModal=()=>{modal.hidden=false;document.body.classList.add('modal-open')};
   const closeModal=()=>{modal.hidden=true;document.body.classList.remove('modal-open')};

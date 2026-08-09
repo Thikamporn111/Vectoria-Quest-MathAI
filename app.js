@@ -568,7 +568,30 @@ if(!localStorage.getItem(audioVersionKey)){state.sound=true;localStorage.setItem
 // Every fresh visit starts with game audio enabled; a previous muted session is not carried over.
 state.sound=true;save();
 let musicVolume=Math.max(0,Math.min(1,Number(localStorage.getItem('vectoria-music-volume')??.5)));
-function showAudioStartGate(){if(document.querySelector('#audioStartGate')||!state.sound)return;document.body.insertAdjacentHTML('beforeend','<button class="audio-start-gate" id="audioStartGate"><span>⚔</span><b>เข้าสู่เกมพร้อมเพลงผจญภัย</b><small>คลิกหนึ่งครั้งเพื่อเริ่มเกมและเปิดเสียง</small><i>เริ่มการผจญภัย →</i></button>');document.querySelector('#audioStartGate').onclick=()=>{vectoriaAudio.start();document.querySelector('#audioStartGate')?.remove()}}
+function showAudioStartGate(){
+  if(document.querySelector('#audioStartGate')||!state.sound)return;
+  const hasSavedGame=state.completed.length>0||state.xp>0;
+  document.body.insertAdjacentHTML('beforeend',`
+    <section class="audio-start-gate" id="audioStartGate" role="dialog" aria-modal="true" aria-labelledby="audioGateTitle">
+      <span>⚔</span>
+      <b id="audioGateTitle">เข้าสู่เกมพร้อมเพลงผจญภัย</b>
+      <small>${hasSavedGame?'พบข้อมูลการผจญภัยที่บันทึกไว้ในเครื่องนี้':'คลิกหนึ่งครั้งเพื่อเริ่มเกมและเปิดเสียง'}</small>
+      <div class="audio-gate-actions">
+        ${hasSavedGame?'<button class="audio-gate-continue" id="continueLastGame">▶ เล่นต่อจากครั้งที่แล้ว</button>':''}
+        <button class="audio-gate-start" id="startAdventure">${hasSavedGame?'เข้าสู่หน้าเกม':'เริ่มการผจญภัย →'}</button>
+      </div>
+    </section>`);
+  const enterGame=continueSaved=>{
+    vectoriaAudio.start();
+    document.querySelector('#audioStartGate')?.remove();
+    if(continueSaved){
+      showMap();
+      toast(`เล่นต่อจากความคืบหน้าเดิม · ผ่านแล้ว ${state.completed.length} / 5 ด่าน`);
+    }
+  };
+  document.querySelector('#continueLastGame')?.addEventListener('click',()=>enterGame(true));
+  document.querySelector('#startAdventure').addEventListener('click',()=>enterGame(false));
+}
 const decorateSoundButton=()=>{const b=document.querySelector('#soundBtn');if(!b)return;b.textContent=state.sound?'♫ เพลง':'🔇 ปิด';b.title=state.sound?'เพลงผจญภัยและเอฟเฟ็กต์เปิดอยู่':'กดเพื่อเปิดเพลงและเอฟเฟ็กต์';b.setAttribute('aria-label',b.title)};
 const updateTopbarBeforeAudio=updateTopbar;
 updateTopbar=function(){updateTopbarBeforeAudio();decorateSoundButton()};

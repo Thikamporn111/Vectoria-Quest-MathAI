@@ -272,3 +272,12 @@ body:has(.game-screen) .universal-scratch.in-game{position:relative!important;in
 .exit-map-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
 .exit-map-btn:focus-visible{outline:4px solid #65eaff;outline-offset:3px}
 @media(max-width:720px){.exit-map-btn{min-height:52px}}
+
+/* Start screen actions: resume an existing local save or enter normally. */
+.audio-start-gate{cursor:default}
+.audio-gate-actions{display:flex;flex-direction:column;align-items:stretch;width:min(390px,calc(100vw - 40px));gap:14px;margin-top:14px}
+.audio-gate-actions button{min-height:58px;padding:13px 24px;border-radius:999px;font:900 17px "Noto Sans Thai";cursor:pointer;transition:.18s}
+.audio-gate-continue{border:2px solid #9fffea;background:linear-gradient(180deg,#23cfa8,#087e75);color:#062b35;box-shadow:0 6px 0 #03504d,0 0 28px rgba(56,255,213,.28)}
+.audio-gate-start{border:2px solid #fff7ae;background:linear-gradient(#fff269,#f59b16);color:#172033;box-shadow:0 6px 0 #7d360b}
+.audio-gate-actions button:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.audio-gate-actions button:focus-visible{outline:4px solid #65eaff;outline-offset:3px}

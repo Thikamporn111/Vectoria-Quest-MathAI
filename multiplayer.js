@@ -11,7 +11,7 @@
     mage: { icon: '🔮', name: 'ลูน่า', role: 'เมจ', color: '#b57cff' },
     archer: { icon: '🏹', name: 'ฟินน์', role: 'อาร์เชอร์', color: '#65efb6' },
     support: { icon: '💚', name: 'มีร่า', role: 'ซัพพอร์ต', color: '#ffe066' },
-    rogue: { icon: '🗡️', name: 'เรน', role: 'โร้ก', color: '#ff78ba' }
+    rogue: { icon: '🗡️', name: 'เรน', role: 'แอสซาซิน', color: '#ff78ba' }
   };
 
   const client = window.supabase?.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {

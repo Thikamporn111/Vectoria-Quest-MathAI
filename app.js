@@ -472,7 +472,7 @@ function showAdventure(forcedFloor=null){
     {title:'ปราสาทเวกเตอร์หนึ่งหน่วย',item:'ชิ้นส่วนสูตร Unit Vector',goal:5,top:'#3b1758',bottom:'#090617',accent:'#d276ff',tip:'เก็บชิ้นส่วนสูตรให้ครบตามลำดับ: หาขนาดของเวกเตอร์ → หา Unit Vector → คำนวณ Dot Product เพื่อศึกษาความสัมพันธ์ของเวกเตอร์ทั้งสอง',items:[[190,170],[390,515],[620,225],[850,520],[1030,185]],steps:['1. หา |B⃗| และ |C⃗|','2. หาร B⃗ ด้วย |B⃗|','3. หาร C⃗ ด้วย |C⃗|','4. คูณพิกัดของ B̂ และ Ĉ','5. รวมได้ B̂ · Ĉ = -1'],foes:[[300,340,2,1.3],[510,400,-1.7,1.8],[720,320,1.9,-1.5],[920,450,-2,-1.2],[1080,320,-1.4,2]]}
   ],cfg=configs[floor];
   const multiplayer=window.vectoriaMultiplayer,partyPlayers=multiplayer?.gameStarted&&multiplayer?.players?.length?multiplayer.players:[],partySize=Math.max(1,Math.min(5,partyPlayers.length||1));
-  const avatarIds=['knight','mage','archer','support','rogue'],avatarData={knight:['อาริน','แทงก์','🛡️'],mage:['ลูน่า','เมจ','🔮'],archer:['ฟินน์','อาร์เชอร์','🏹'],support:['มีร่า','ซัพพอร์ต','💚'],rogue:['เรน','โร้ก','🗡️']};
+  const avatarIds=['knight','mage','archer','support','rogue'],avatarData={knight:['อาริน','แทงก์','🛡️'],mage:['ลูน่า','เมจ','🔮'],archer:['ฟินน์','อาร์เชอร์','🏹'],support:['มีร่า','ซัพพอร์ต','💚'],rogue:['เรน','แอสซาซิน','🗡️']};
   const me=partyPlayers.find(p=>p.id===multiplayer?.session?.playerId),avatarId=me?.avatar_id||multiplayer?.selectedAvatar||'knight',avatarIndex=Math.max(0,avatarIds.indexOf(avatarId)),avatar=avatarData[avatarId]||avatarData.knight,playerName=me?.display_name||multiplayer?.soloPlayerName||avatar[0];
   const difficulty=1+(partySize-1)*.16+floor*.08,extraEnemyCount=(partySize-1)*2+Math.floor(floor/2);
   document.querySelector('#hudPlayerName').textContent=`${playerName} · ${avatar[1]}`;

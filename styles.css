@@ -293,3 +293,4 @@ body:has(.game-screen) .universal-scratch.in-game{position:relative!important;in
 /* Formula chips inside lesson steps are rectangular and never inherit the
    circular style used by the numbered step badge. */
 .lesson-step .math-nowrap{display:inline-flex!important;align-items:center!important;width:max-content!important;max-width:100%!important;height:auto!important;min-height:34px;padding:6px 10px!important;border:1px solid var(--cyan)!important;border-radius:5px!important;line-height:1.35!important;vertical-align:middle;overflow:visible}
+#bossGlyph{font-size:clamp(64px,7vw,90px);line-height:1;font-family:"Cambria Math","Times New Roman",serif;letter-spacing:-.06em}

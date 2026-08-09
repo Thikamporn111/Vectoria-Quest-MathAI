@@ -539,6 +539,16 @@ renderQ4Lesson=function(){
   const cards=document.querySelectorAll('.q4-step-card');
   if(cards[1])cards[1].querySelector('div').innerHTML=`<h3>ตรวจว่า A ตั้งฉากกับ B จริงไหม</h3><p>เริ่มจากสูตรที่เชื่อม Dot Product กับมุม</p><div class="q4-calc"><b>A · B = |A||B| cos θ</b><br><br>1) หา A · B ด้วยสูตร AₓBₓ + AᵧBᵧ<br>A · B = (4)(-3) + (-3)(-4)<br>= -12 + 12<br>= <b>0</b><br><br>2) หาขนาดด้วยสูตร |V| = √(Vₓ² + Vᵧ²)<br>|A| = √(4² + (-3)²) = √25 = <b>5</b><br>|B| = √((-3)² + (-4)²) = √25 = <b>5</b><br><br>3) แทนค่าใน A · B = |A||B| cos θ<br>0 = (5)(5) cos θ<br>0 = 25 cos θ<br>cos θ = 0<br>θ = <b>90°</b></div><p>ดังนั้น A ตั้งฉากกับ B จริง หรือ <b>A ⟂ B</b></p>`;
 };
+
+/* In the perpendicular mini-game the player's name tag already identifies
+   the character above their head, so do not stack the vector letter B over it. */
+const vectoriaCanvasFillText=CanvasRenderingContext2D.prototype.fillText;
+CanvasRenderingContext2D.prototype.fillText=function(text,x,y,maxWidth){
+  if(text==='B'&&state.current===3&&document.querySelector('.game-screen'))return;
+  return maxWidth===undefined
+    ?vectoriaCanvasFillText.call(this,text,x,y)
+    :vectoriaCanvasFillText.call(this,text,x,y,maxWidth);
+};
 /* Keep every magnitude expression together so vector marks never fall apart. */
 const renderLessonBeforeStableMath=renderLesson;
 renderLesson=function(q){

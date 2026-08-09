@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260809-9" />
+  <link rel="stylesheet" href="styles.css?v=20260809-10" />
   <link rel="stylesheet" href="graph.css" />
-  <link rel="stylesheet" href="multiplayer.css?v=20260809-5" />
+  <link rel="stylesheet" href="multiplayer.css?v=20260809-6" />
 </head>
 <body>
   <div class="mist mist-one"></div><div class="mist mist-two"></div>
@@ -33,8 +33,9 @@
   <template id="gameTemplate">
     <section class="game-screen screen-in">
       <div class="game-hud">
-        <div class="hud-avatar">🛡️</div>
-        <div><small>อาริน · นักผจญภัยฝึกหัด</small><b id="floorName">ชั้น 1 ประตูพิกัด</b></div>
+        <div class="hud-avatar" id="hudAvatar"><span>🛡️</span></div>
+        <div><small id="hudPlayerName">อาริน · นักผจญภัยฝึกหัด</small><b id="floorName">ชั้น 1 ประตูพิกัด</b></div>
+        <div class="hud-party-power" id="hudPartyPower"><small>กำลังปาร์ตี้</small><b>1 คน</b></div>
         <div class="hud-mission"><small>ภารกิจ</small><b id="missionText">เก็บคริสตัล 0 / 3</b></div>
         <button class="map-pill" id="sampleQuestBtn">📘 โจทย์ตัวอย่าง</button>
         <button class="map-pill prev-floor" id="previousFloorBtn">← ด่านก่อนหน้า</button>
@@ -96,7 +97,7 @@
   </template>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.91.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
-  <script src="app.js?v=20260809-27"></script>
-  <script src="multiplayer.js?v=20260809-4"></script>
+  <script src="app.js?v=20260809-28"></script>
+  <script src="multiplayer.js?v=20260809-5"></script>
 </body>
 </html>

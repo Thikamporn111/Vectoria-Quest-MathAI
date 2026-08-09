@@ -26,6 +26,7 @@
     channel: null,
     selectedAvatar: 'knight',
     selectedPlayerCount: 5,
+    soloPlayerName: '',
     lastPositionAt: 0,
     lastDbPositionAt: 0,
     lastPosition: null,
@@ -93,7 +94,9 @@
       document.querySelector('#mpCreateRoom').onclick = () => this.createRoom();
       document.querySelector('#mpJoinRoom').onclick = () => this.joinRoom();
       document.querySelector('#mpRoomCode').oninput = e => e.target.value = e.target.value.toUpperCase().replace(/[^A-Z2-9]/g,'');
-      document.querySelector('#mpSolo').onclick = () => { this.gameStarted = true; showMap(); };
+      document.querySelector('#mpSolo').onclick = () => {
+        try{const profile=this.getProfile();this.soloPlayerName=profile.name;this.gameStarted=true;showMap()}catch(e){this.showError(e)}
+      };
       document.querySelector('#mpName').focus();
     },
 
@@ -280,7 +283,7 @@
     renderFriendMarkers(floor) {
       const frame=document.querySelector('.game-frame');if(!frame)return;
       let layer=frame.querySelector('.mp-friend-layer');if(!layer){layer=document.createElement('div');layer.className='mp-friend-layer';frame.append(layer);}
-      layer.innerHTML=this.players.filter(p=>p.id!==this.session.playerId&&p.progress===floor).map(p=>{const a=avatars[p.avatar_id]||avatars.knight;return `<div class="mp-friend-marker" style="--x:${p.pos_x/12.8}%;--y:${p.pos_y/7.2}%;--avatar:${a.color}"><i>${a.icon}</i><b>${escapeHtml(p.display_name)}</b></div>`}).join('');
+      layer.innerHTML=this.players.filter(p=>p.id!==this.session.playerId&&p.progress===floor).map(p=>{const a=avatars[p.avatar_id]||avatars.knight,avatarIndex=Math.max(0,Object.keys(avatars).indexOf(p.avatar_id));return `<div class="mp-friend-marker" style="--x:${p.pos_x/12.8}%;--y:${p.pos_y/7.2}%;--avatar:${a.color};--sprite-index:${avatarIndex}"><i><span>${a.icon}</span></i><b>${escapeHtml(p.display_name)}</b></div>`}).join('');
     },
 
     startHeartbeat(){clearInterval(this.heartbeat);this.heartbeat=setInterval(()=>{if(this.session)this.syncProgress(state?.completed?.length||0)},HEARTBEAT_INTERVAL)},

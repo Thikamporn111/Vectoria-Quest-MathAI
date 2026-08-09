@@ -32,3 +32,13 @@ body:has(.mp-lobby) #app{position:relative;z-index:36}.mp-lobby{position:relativ
 
 /* Party members inside the arena use the 3D character selected at the entrance. */
 .mp-friend-marker i{overflow:hidden;background-image:url('character-select-3d.png?v=1')!important;background-repeat:no-repeat!important;background-size:500% 100%!important;background-position:calc(var(--sprite-index) * 25%) center!important;box-shadow:0 0 22px var(--avatar)!important}.mp-friend-marker i span{display:none}.mp-friend-marker b{border:1px solid var(--avatar);box-shadow:0 2px 12px rgba(0,0,0,.55)}
+
+/* Keep every 3D hero in its original proportions. The source artwork contains
+   five tall panels, so the picker is centred and each card stays portrait. */
+.mp-avatar-grid{width:100%;max-width:1180px;margin-left:auto!important;margin-right:auto!important;align-items:stretch}
+.mp-avatar{height:auto!important;min-height:300px;aspect-ratio:3/4}
+.mp-avatar-art{background-size:500% auto!important;background-position:calc(var(--sprite-index) * 25%) 48%!important}
+.mp-avatar-info{min-height:48px;padding:4px 6px;border-radius:12px;background:linear-gradient(90deg,rgba(3,14,36,.88),rgba(3,14,36,.42))}
+@media (min-width:901px) and (max-height:760px){.mp-avatar-grid{max-width:1050px}.mp-avatar{min-height:245px;aspect-ratio:4/5}.mp-avatar-art{background-position:calc(var(--sprite-index) * 25%) 42%!important}}
+@media (max-width:1000px){.mp-avatar{min-height:280px;aspect-ratio:3/4}}
+@media (max-width:620px){.mp-avatar{min-height:245px;aspect-ratio:3/4}}

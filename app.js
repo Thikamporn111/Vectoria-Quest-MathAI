@@ -589,8 +589,8 @@ function showAudioStartGate(){
   document.body.insertAdjacentHTML('beforeend',`
     <section class="audio-start-gate" id="audioStartGate" role="dialog" aria-modal="true" aria-labelledby="audioGateTitle">
       <span>⚔</span>
-      <b id="audioGateTitle">เข้าสู่เกมพร้อมเพลงผจญภัย</b>
-      <small>${hasSavedGame?'พบข้อมูลการผจญภัยที่บันทึกไว้ในเครื่องนี้':'คลิกหนึ่งครั้งเพื่อเริ่มเกมและเปิดเสียง'}</small>
+      <b id="audioGateTitle">เข้าสู่เกม</b>
+      <small>คลิกหนึ่งครั้งเพื่อเข้าเกม</small>
       <div class="audio-gate-actions">
         ${hasSavedGame?'<button class="audio-gate-continue" id="continueLastGame">▶ เล่นต่อจากครั้งที่แล้ว</button>':''}
         <button class="audio-gate-start" id="startAdventure">${hasSavedGame?'เข้าสู่หน้าเกม':'เริ่มการผจญภัย →'}</button>

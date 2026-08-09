@@ -805,23 +805,50 @@ function saveGameNow() {
   toast('เซฟเกมเรียบร้อยแล้ว กลับมาเล่นต่อได้ทุกเมื่อ');
 }
 
-async function exitGameSafely() {
-  if (!confirm('เซฟความคืบหน้าและออกไปหน้าเลือกตัวละครหรือไม่?')) return;
+function showExitGameMenu() {
   saveGameNow();
-  if (typeof gameWorld !== 'undefined') gameWorld.transitioning = true;
-  if (typeof gameLoop !== 'undefined') cancelAnimationFrame(gameLoop);
-  window.onkeydown = null;
-  window.onkeyup = null;
-  vectoriaAudio?.stop?.();
+  document.querySelector('#exitGameMenu')?.remove();
   const multiplayer = window.vectoriaMultiplayer;
-  if (multiplayer?.session) await multiplayer.leaveRoom();
-  else if (multiplayer?.showEntrance) {
-    multiplayer.gameStarted = false;
-    multiplayer.showEntrance();
-  } else showMap();
-  window.scrollTo({top:0,behavior:'smooth'});
+  const avatarOrder = ['knight','mage','archer','support','rogue'];
+  const avatarIndex = Math.max(0,avatarOrder.indexOf(multiplayer?.selectedAvatar || 'knight'));
+  const playerName = multiplayer?.players?.find(player => player.id === multiplayer?.session?.playerId)?.display_name || 'นักผจญภัย';
+  document.body.insertAdjacentHTML('beforeend', `
+    <section class="exit-game-menu" id="exitGameMenu" role="dialog" aria-modal="true" aria-labelledby="exitMenuTitle" style="--exit-index:${avatarIndex}">
+      <div class="exit-menu-card">
+        <div class="exit-character-art" aria-hidden="true"></div>
+        <div class="exit-menu-content">
+          <span class="exit-menu-kicker">VECTORIA QUEST · บันทึกอัตโนมัติแล้ว</span>
+          <h1 id="exitMenuTitle">พักการผจญภัย</h1>
+          <p><b>${playerName.replace(/[&<>"']/g,'')}</b> ความคืบหน้าของคุณถูกเก็บไว้อย่างปลอดภัย</p>
+          <div class="exit-save-summary"><span>ด่านที่ผ่าน</span><strong>${state.completed.length} / 5</strong><span>คริสตัลความรู้</span><strong>${state.xp}</strong></div>
+          <button class="exit-continue-btn" id="continueSavedGame">▶ เล่นเกมต่อ</button>
+          <button class="exit-reset-btn" id="resetSavedGame">↻ เริ่มเล่นเกมใหม่ <small>(Reset)</small></button>
+          <small class="exit-warning">การ Reset จะลบความคืบหน้าของเกมนี้ทั้งหมด</small>
+        </div>
+      </div>
+    </section>`);
+  const menu = document.querySelector('#exitGameMenu');
+  document.querySelector('#continueSavedGame').onclick = () => {
+    menu.classList.add('closing');
+    setTimeout(() => menu.remove(),220);
+    toast('กลับสู่การผจญภัย');
+  };
+  document.querySelector('#resetSavedGame').onclick = async () => {
+    if (!confirm('เริ่มเกมใหม่และลบความคืบหน้าทั้งหมดจริงหรือไม่?')) return;
+    state = {...defaultState,completed:[]};
+    save();
+    menu.remove();
+    if (multiplayer?.session) await multiplayer.leaveRoom();
+    else if (multiplayer?.showEntrance) {
+      multiplayer.gameStarted = false;
+      multiplayer.showEntrance();
+    } else showMap();
+    toast('เริ่มเกมใหม่แล้ว เลือกตัวละครเพื่อออกผจญภัย');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  document.querySelector('#continueSavedGame').focus();
 }
 
 document.querySelector('#saveGameBtn')?.addEventListener('click', saveGameNow);
-document.querySelector('#exitGameBtn')?.addEventListener('click', exitGameSafely);
+document.querySelector('#exitGameBtn')?.addEventListener('click', showExitGameMenu);
 window.addEventListener('pagehide', () => save());

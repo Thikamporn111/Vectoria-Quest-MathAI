@@ -629,7 +629,9 @@ const decorateSoundButton=()=>{const b=document.querySelector('#soundBtn');if(!b
 const updateTopbarBeforeAudio=updateTopbar;
 updateTopbar=function(){updateTopbarBeforeAudio();decorateSoundButton()};
 decorateSoundButton();
-setTimeout(()=>{if(state.sound)vectoriaAudio.start()},0);
+// Always begin at the entry/continue screen. Music starts only after the
+// player's click, so browsers with autoplay permission cannot skip this page.
+setTimeout(showAudioStartGate,0);
 const soundButton=document.querySelector('#soundBtn');
 soundButton?.insertAdjacentHTML('afterend',`<label class="music-volume" title="ปรับระดับเสียงเพลง"><span>🔊</span><input id="musicVolume" type="range" min="0" max="100" value="${Math.round(musicVolume*100)}" aria-label="ระดับเสียงเพลง"><output id="musicVolumeValue">${Math.round(musicVolume*100)}%</output></label>`);
 document.querySelector('#musicVolume')?.addEventListener('input',e=>{musicVolume=Number(e.target.value)/100;localStorage.setItem('vectoria-music-volume',musicVolume);if(vectoriaAudio.bgm)vectoriaAudio.bgm.volume=musicVolume;document.querySelector('#musicVolumeValue').textContent=`${e.target.value}%`});

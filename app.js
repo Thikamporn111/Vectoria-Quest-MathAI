@@ -949,13 +949,21 @@ renderQ4Lesson=function(){
     </div></div>`);
   /* Show each value once and teach magnitude before using it in the angle formula. */
   const cards=document.querySelectorAll('.q4-step-card');
+  const angleTable=`<p class="q4-angle-question"><b>cos θ = 0 มีมุมเท่าไหร่?</b> ดูจากตารางด้านล่าง</p><table class="inline-cos-table q4-proof-table"><thead><tr><th>θ</th><th>0°</th><th>90°</th><th>180°</th></tr></thead><tbody><tr><th>cos θ</th><td>1</td><td class="key-cell">0</td><td>-1</td></tr><tr class="angle-pictures"><th>รูปมุม</th><td><span class="angle-icon angle-zero"><i></i><b></b></span><small>ทิศเดียวกัน</small></td><td class="key-cell"><span class="angle-icon angle-ninety"><i></i><b></b><em></em></span><small>ตั้งฉาก</small></td><td><span class="angle-icon angle-oneeighty"><i></i><b></b></span><small>ทิศตรงข้าม</small></td></tr></tbody></table><strong class="q4-angle-answer">จากตาราง cos 90° = 0 ดังนั้น θ = 90°</strong>`;
   if(cards[1])cards[1].querySelector('div').innerHTML=`<h3>ตรวจว่า A ตั้งฉากกับ B จริงไหม</h3>
     <p>เราต้องรู้ขนาดของเวกเตอร์ก่อน จึงค่อยนำไปแทนในสูตรที่เชื่อม Dot Product กับมุม</p>
     <div class="q4-calc q4-ordered-proof">
       <section><b>1) หาขนาดของ A และ B ก่อน</b><span>สูตรหาขนาดของเวกเตอร์</span><strong>|V| = √(Vₓ² + Vᵧ²)</strong><span>|A| = √(4² + (-3)²)</span><span>|A| = √(16 + 9) = √25 = <b>5</b></span><span>|B| = √((-3)² + (-4)²)</span><span>|B| = √(9 + 16) = √25 = <b>5</b></span></section>
       <section><b>2) หา A · B ด้วยสูตร Dot Product</b><strong>A · B = AₓBₓ + AᵧBᵧ</strong><span>A · B = (4)(-3) + (-3)(-4)</span><span>A · B = -12 + 12</span><span>A · B = <b>0</b></span></section>
-      <section><b>3) แทนค่าลงในสูตรที่เชื่อมกับมุม</b><strong>A · B = |A||B| cos θ</strong><strong>0 = (5)(5) cos θ</strong><strong>0 = 25 cos θ</strong><span>cos θ = 0</span><span>θ = <b>90°</b></span></section>
-    </div><p>ดังนั้น A ตั้งฉากกับ B จริง หรือ <b>A ⟂ B</b></p>`;
+      <section><b>3) แทนค่าลงในสูตรที่เชื่อมกับมุม</b><strong>A · B = |A||B| cos θ</strong><strong>0 = (5)(5) cos θ</strong><strong>0 = 25 cos θ</strong><p class="q4-zero-reason">ด้านซ้ายของสมการเท่ากับ 0 ดังนั้นก้อนด้านขวา <b>25 cos θ ต้องเท่ากับ 0</b> ด้วย และเพราะ 25 ไม่ใช่ 0 จึงต้องให้ <b>cos θ = 0</b></p><strong>cos θ = 0</strong>${angleTable}</section>
+    </div><p class="q4-proof-conclusion">ดังนั้น <b>A</b> ตั้งฉากกับ <b>B</b> จริง หรือ <b>A ⟂ B</b></p>`;
+  if(cards[3])cards[3].querySelector('div').innerHTML=`<h3>ตรวจว่า -A ตั้งฉากกับ C จริงไหม</h3>
+    <p>ทำแบบเดียวกับคู่ A และ B โดยหาขนาดและ Dot Product ก่อนนำไปหามุม</p>
+    <div class="q4-calc q4-ordered-proof">
+      <section><b>1) หาขนาดของ -A และ C ก่อน</b><span>สูตรหาขนาดของเวกเตอร์</span><strong>|V| = √(Vₓ² + Vᵧ²)</strong><span>|-A| = √((-4)² + 3²)</span><span>|-A| = √(16 + 9) = √25 = <b>5</b></span><span>|C| = √(3² + 4²)</span><span>|C| = √(9 + 16) = √25 = <b>5</b></span></section>
+      <section><b>2) หา (-A) · C ด้วยสูตร Dot Product</b><strong>(-A) · C = (-A)ₓCₓ + (-A)ᵧCᵧ</strong><span>(-A) · C = (-4)(3) + (3)(4)</span><span>(-A) · C = -12 + 12</span><span>(-A) · C = <b>0</b></span></section>
+      <section><b>3) แทนค่าลงในสูตรที่เชื่อมกับมุม</b><strong>(-A) · C = |-A||C| cos θ</strong><strong>0 = (5)(5) cos θ</strong><strong>0 = 25 cos θ</strong><p class="q4-zero-reason">ด้านซ้ายของสมการเท่ากับ 0 ดังนั้นก้อนด้านขวา <b>25 cos θ ต้องเท่ากับ 0</b> ด้วย และเพราะ 25 ไม่ใช่ 0 จึงต้องให้ <b>cos θ = 0</b></p><strong>cos θ = 0</strong>${angleTable}</section>
+    </div><p class="q4-proof-conclusion">ดังนั้น <b>-A</b> ตั้งฉากกับ <b>C</b> จริง หรือ <b>-A ⟂ C</b></p>`;
   document.querySelectorAll('.q4-clean .cos-in-step,.q4-clean .pair-cos').forEach(block=>block.remove());
   const modal=document.querySelector('#q4RuleModal');
   const openModal=()=>{modal.hidden=false;document.body.classList.add('modal-open')};

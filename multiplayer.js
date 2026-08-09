@@ -242,7 +242,7 @@
       app.innerHTML='<section class="mp-launch-screen"><div class="mp-launch-crest">⚔</div><span>สมาชิกทุกคนพร้อมแล้ว</span><h1>ออกเดินทางสู่แผนที่!</h1><strong id="mpLaunchCount">3</strong><p>กำลังเปิดประตูดันเจี้ยนให้ทั้งปาร์ตี้</p></section>';
       if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('gate');
       const count=document.querySelector('#mpLaunchCount');let value=3;
-      const timer=setInterval(()=>{value--;if(value>0){count.textContent=value;if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('click');return}clearInterval(timer);count.textContent='GO!';if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('portal');setTimeout(()=>{showMap();this.renderPartyBar();this.subscribe();this.startHeartbeat()},450)},450);
+      const timer=setInterval(()=>{value--;if(value>0){count.textContent=value;if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('click');return}clearInterval(timer);count.textContent='GO!';if(typeof vectoriaAudio!=='undefined')vectoriaAudio.effect('portal');setTimeout(()=>{showMap();this.renderPartyBar();this.subscribe();this.startHeartbeat()},800)},1000);
     },
 
     async leaveRoom() {

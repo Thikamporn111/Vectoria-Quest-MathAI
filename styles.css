@@ -394,6 +394,13 @@ body.modal-open{overflow:hidden}@media(max-width:560px){.q4-rule-modal{padding:6
 @media(max-width:760px){
   .game-frame .game-dialog{left:8px;right:8px;bottom:126px;max-height:34%;overflow:auto}
 }
+
+/* Keep scratchpad typing readable even when the browser forces dark controls. */
+#universalScratch .scratch-panel textarea{
+  color-scheme:light!important;background-color:#fffdf2!important;color:#14263b!important;
+  -webkit-text-fill-color:#14263b!important;caret-color:#176db1!important;opacity:1!important;
+}
+#universalScratch .scratch-panel textarea::placeholder{color:#6f7884!important;opacity:1}
 @media(max-height:560px) and (orientation:landscape){
   .game-frame .game-dialog{left:175px;right:92px;bottom:10px;max-height:45%;overflow:auto}
 }

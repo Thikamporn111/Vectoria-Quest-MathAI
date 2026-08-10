@@ -522,8 +522,9 @@ function showAdventure(forcedFloor=null){
   document.querySelector('#actionBtn').onclick=()=>tryPortal();
   const keyDirection={ArrowUp:'ArrowUp',w:'ArrowUp',W:'ArrowUp',ArrowDown:'ArrowDown',s:'ArrowDown',S:'ArrowDown',ArrowLeft:'ArrowLeft',a:'ArrowLeft',A:'ArrowLeft',ArrowRight:'ArrowRight',d:'ArrowRight',D:'ArrowRight'};
   const movementKeys=Object.keys(keyDirection);
-  const down=e=>{const key=keyDirection[e.key];if(!key)return;e.preventDefault();dialog.style.display='none';if(!gameKeys[key])moveHero(key,18);gameKeys[key]=true};
-  const up=e=>{const key=keyDirection[e.key];if(!key)return;e.preventDefault();gameKeys[key]=false};
+  const isTypingTarget=e=>e.target?.matches?.('input, textarea, select, [contenteditable="true"]');
+  const down=e=>{if(isTypingTarget(e))return;const key=keyDirection[e.key];if(!key)return;e.preventDefault();dialog.style.display='none';if(!gameKeys[key])moveHero(key,18);gameKeys[key]=true};
+  const up=e=>{const key=keyDirection[e.key];if(!key)return;gameKeys[key]=false;if(isTypingTarget(e))return;e.preventDefault()};
   const releaseAllControls=()=>{Object.keys(gameKeys).forEach(key=>gameKeys[key]=false);document.querySelectorAll('.mobile-pad button').forEach(button=>button.classList.remove('is-held'))};
   window.onkeydown=down;window.onkeyup=up;window.onblur=releaseAllControls;
   canvas.tabIndex=0;canvas.addEventListener('pointerdown',()=>canvas.focus({preventScroll:true}));
@@ -825,6 +826,7 @@ drawVectors = function(vectors) {
 // If the introductory dialog is below a short viewport, the first movement
 // command should still start the minigame instead of leaving movement locked.
 function unlockAdventureFromMovement(event) {
+  if (event.target?.matches?.('input, textarea, select, [contenteditable="true"]')) return;
   const movementKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D'];
   const isKeyboardMove = event.type === 'keydown' && movementKeys.includes(event.key);
   const isPadMove = event.type === 'pointerdown' && event.target.closest?.('.mobile-pad button');

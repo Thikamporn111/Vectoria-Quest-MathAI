@@ -651,17 +651,21 @@ function showAudioStartGate(){
     document.querySelector('#audioStartGate')?.remove();
     vectoriaAudio.gateAccepted=true;
     vectoriaAudio.start();
+    /* Continue resumes the saved run directly on the dungeon map. */
+    if(continueSaved){
+      showMap();
+      window.scrollTo({top:0,behavior:'auto'});
+      return;
+    }
     if(!continueSaved&&hasSavedGame){
       const keepSound=state.sound;
       state={...defaultState,completed:[],adventure:{},started:false,sound:keepSound};
       save();
     }
-    /* Both a new run and a saved run must pass through player setup first.
-       This keeps character selection, player name and party rooms reachable. */
+    /* A new run starts at player, character and party setup. */
     if(window.vectoriaMultiplayer?.showEntrance){
       window.vectoriaMultiplayer.showEntrance();
       window.scrollTo({top:0,behavior:'auto'});
-      if(continueSaved)toast(`บันทึกเดิมพร้อมแล้ว · เลือกตัวละครและปาร์ตี้ก่อนเล่นต่อ`);
     }else showMap();
   };
   document.querySelector('#continueLastGame')?.addEventListener('click',()=>enterGame(true));

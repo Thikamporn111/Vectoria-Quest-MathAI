@@ -651,13 +651,13 @@ function showAudioStartGate(){
     document.querySelector('#audioStartGate')?.remove();
     vectoriaAudio.gateAccepted=true;
     vectoriaAudio.start();
-    if(continueSaved){
-      showMap();
-      toast(`เล่นต่อจากความคืบหน้าเดิม · ผ่านแล้ว ${state.completed.length} / 5 ด่าน`);
-    }else if(window.vectoriaMultiplayer?.showEntrance&&!document.querySelector('.mp-shell')){
+    /* Both a new run and a saved run must pass through player setup first.
+       This keeps character selection, player name and party rooms reachable. */
+    if(window.vectoriaMultiplayer?.showEntrance){
       window.vectoriaMultiplayer.showEntrance();
       window.scrollTo({top:0,behavior:'auto'});
-    }
+      if(continueSaved)toast(`บันทึกเดิมพร้อมแล้ว · เลือกตัวละครและปาร์ตี้ก่อนเล่นต่อ`);
+    }else showMap();
   };
   document.querySelector('#continueLastGame')?.addEventListener('click',()=>enterGame(true));
   document.querySelector('#startAdventure').addEventListener('click',()=>enterGame(false));

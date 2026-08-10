@@ -567,7 +567,21 @@ function showAdventure(forcedFloor=null){
     ctx.save();ctx.translate(hero.x,hero.y);if(hero.flash%4<2||!hero.flash){ctx.shadowBlur=25;ctx.shadowColor=cfg.accent;ctx.fillStyle='rgba(7,24,55,.96)';ctx.beginPath();ctx.arc(0,0,hero.r+8,0,Math.PI*2);ctx.fill();ctx.strokeStyle=cfg.accent;ctx.lineWidth=4;ctx.stroke();ctx.save();ctx.beginPath();ctx.arc(0,0,hero.r+4,0,Math.PI*2);ctx.clip();if(gameAvatarSheet.complete&&gameAvatarSheet.naturalWidth){const sw=gameAvatarSheet.naturalWidth/5;ctx.drawImage(gameAvatarSheet,hero.avatarIndex*sw,0,sw,gameAvatarSheet.naturalHeight,-hero.r-8,-hero.r-12,(hero.r+8)*2,(hero.r+12)*2)}else{ctx.fillStyle='#206bd1';ctx.fillRect(-hero.r,-hero.r,hero.r*2,hero.r*2);ctx.fillStyle='#fff';ctx.font='26px sans-serif';ctx.textAlign='center';ctx.fillText(avatar[2],0,9)}ctx.restore();ctx.shadowBlur=0;const labelWidth=Math.max(92,ctx.measureText(hero.name).width+28);ctx.fillStyle='rgba(2,14,38,.94)';ctx.strokeStyle='#ffe068';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(-labelWidth/2,-hero.r-38,labelWidth,24,12);ctx.fill();ctx.stroke();ctx.fillStyle='#fff';ctx.font='800 14px Noto Sans Thai';ctx.textAlign='center';ctx.fillText(hero.name,0,-hero.r-21)}ctx.restore();if(floor===1){const badge=(px,py,text,color)=>{ctx.shadowBlur=18;ctx.shadowColor=color;ctx.fillStyle='#07152f';ctx.strokeStyle=color;ctx.lineWidth=5;ctx.beginPath();ctx.arc(px,py,27,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='700 21px Chakra Petch';ctx.textAlign='center';ctx.fillText(text,px,py+7)};badge(hero.x,hero.y-84,'A','#48d8ff');badge(1280-hero.x,720-hero.y-70,'-A','#d48aff')}
     ctx.fillStyle='rgba(3,12,30,.9)';ctx.strokeStyle=cfg.accent;ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(18,18,520,52,13);ctx.fill();ctx.stroke();ctx.fillStyle='white';ctx.font='600 16px Noto Sans Thai';ctx.textAlign='left';ctx.fillText(`◆ ${cfg.item} ${gameWorld.collected}/${cfg.goal}   ♥ ${state.hp}/5   👥 ${partySize} คน   👾 ${enemies.length}`,33,50)}
   const frameBudget=20,syncBudget=800;let lastGameFrame=performance.now(),lastPositionSync=0,lastSyncedX=hero.x,lastSyncedY=hero.y;
-  function loop(now=performance.now()){if(gameWorld.transitioning)return;if(now-lastGameFrame<frameBudget){gameLoop=requestAnimationFrame(loop);return}const frameScale=Math.min(1.8,(now-lastGameFrame)/16.667);lastGameFrame=now;update(frameScale);if(gameWorld.transitioning)return;draw();if(now-lastPositionSync>=syncBudget&&(Math.abs(hero.x-lastSyncedX)>8||Math.abs(hero.y-lastSyncedY)>8)){window.vectoriaMultiplayer?.syncPosition(hero.x,hero.y,floor);lastPositionSync=now;lastSyncedX=hero.x;lastSyncedY=hero.y}gameLoop=requestAnimationFrame(loop)}draw();gameLoop=requestAnimationFrame(loop);app.focus()
+  function loop(now=performance.now()){
+    if(gameWorld.transitioning)return;
+    /* Schedule the next frame first. A temporary Realtime or drawing error must
+       never stop local movement and leave the hero frozen. */
+    gameLoop=requestAnimationFrame(loop);
+    if(now-lastGameFrame<frameBudget)return;
+    const frameScale=Math.min(1.8,(now-lastGameFrame)/16.667);lastGameFrame=now;
+    try{update(frameScale);if(gameWorld.transitioning)return;draw()}
+    catch(error){console.error('Vectoria minigame frame recovered:',error);return}
+    if(now-lastPositionSync>=syncBudget&&(Math.abs(hero.x-lastSyncedX)>8||Math.abs(hero.y-lastSyncedY)>8)){
+      try{window.vectoriaMultiplayer?.syncPosition?.(hero.x,hero.y,floor)}
+      catch(error){console.warn('Realtime position sync skipped:',error)}
+      lastPositionSync=now;lastSyncedX=hero.x;lastSyncedY=hero.y;
+    }
+  }draw();gameLoop=requestAnimationFrame(loop);app.focus()
 }
 document.querySelector('#brandBtn').onclick=()=>showMap();document.querySelector('#soundBtn').onclick=()=>{state.sound=!state.sound;save();toast(state.sound?'เปิดเสียงแล้ว':'ปิดเสียงแล้ว')};setupUniversalScratchpad();updateTopbar();showMap();
 /* Keep the perpendicular lesson wording and proof explicit for beginners. */

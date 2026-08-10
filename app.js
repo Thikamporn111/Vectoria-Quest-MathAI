@@ -490,7 +490,11 @@ function showAdventure(forcedFloor=null){
      Extra players still appear through Realtime, but each device renders a light arena. */
   const difficulty=1+(partySize-1)*.05+floor*.03,extraEnemyCount=0;
   const lowPowerDevice=true;
-  const savedAdventure=state.adventure?.[floor]||{};
+  /* A cleared floor is always replayable from the beginning.  Only the
+     minigame run is refreshed; lesson, boss, reward and completed-floor data
+     remain saved until the player explicitly resets or starts a new game. */
+  const replayingClearedFloor=state.completed.includes(q.id);
+  const savedAdventure=replayingClearedFloor?{}:(state.adventure?.[floor]||{});
   document.querySelector('#hudPlayerName').textContent=`${playerName} · ${avatar[1]}`;
   const hudAvatar=document.querySelector('#hudAvatar');hudAvatar.style.setProperty('--sprite-index',avatarIndex);hudAvatar.querySelector('span').textContent=avatar[2];
   document.querySelector('#hudPartyPower').innerHTML=`<small>กำลังปาร์ตี้ · ระดับ ${floor+1}</small><b>${partySize} คน · ความยาก ×${difficulty.toFixed(1)}</b>`;

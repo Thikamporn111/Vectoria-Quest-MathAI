@@ -474,7 +474,7 @@ renderChallenge=function(q){
 let gameLoop=0, gameKeys={}, gameWorld=null;
 const gameAvatarSheet=new Image();gameAvatarSheet.src='character-select-3d.png?v=1';
 function showAdventure(forcedFloor=null){
-  state.started=true;save();cancelAnimationFrame(gameLoop); gameKeys={}; const app=document.querySelector('#app');app.innerHTML='';app.append(document.querySelector('#gameTemplate').content.cloneNode(true));
+  state.started=true;save();window.scrollTo({top:0,left:0,behavior:'auto'});cancelAnimationFrame(gameLoop); gameKeys={}; const app=document.querySelector('#app');app.innerHTML='';app.append(document.querySelector('#gameTemplate').content.cloneNode(true));
   const floor=forcedFloor===null?Math.min(state.completed.length,4):Math.max(0,Math.min(forcedFloor,state.completed.length,4)),q=quests[floor],canvas=document.querySelector('#gameCanvas'),ctx=canvas.getContext('2d');
   const configs=[
     {title:'ป่าพิกัด',item:'คริสตัลพิกัด',goal:3,top:'#123c67',bottom:'#06172a',accent:'#52eaff',tip:'เก็บคริสตัลตามจุดบนแผนที่ให้ครบ',items:[[315,165],[610,535],[900,235]],foes:[[460,330,1.7,1.2],[790,470,-1.5,1.4],[1040,365,1.2,-1.6]]},
@@ -644,13 +644,18 @@ function showAudioStartGate(){
       <small>คลิกหนึ่งครั้งเพื่อเข้าเกม</small>
       <div class="audio-gate-actions">
         ${hasSavedGame?'<button class="audio-gate-continue" id="continueLastGame">▶ เล่นเกมต่อ</button>':''}
-        <button class="audio-gate-start" id="startAdventure">${hasSavedGame?'เข้าสู่หน้าเกม':'เริ่มการผจญภัย →'}</button>
+        <button class="audio-gate-start" id="startAdventure">↻ เริ่มเกมใหม่</button>
       </div>
     </section>`);
   const enterGame=continueSaved=>{
     document.querySelector('#audioStartGate')?.remove();
     vectoriaAudio.gateAccepted=true;
     vectoriaAudio.start();
+    if(!continueSaved&&hasSavedGame){
+      const keepSound=state.sound;
+      state={...defaultState,completed:[],adventure:{},started:false,sound:keepSound};
+      save();
+    }
     /* Both a new run and a saved run must pass through player setup first.
        This keeps character selection, player name and party rooms reachable. */
     if(window.vectoriaMultiplayer?.showEntrance){

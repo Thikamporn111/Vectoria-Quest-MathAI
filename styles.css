@@ -352,6 +352,35 @@ html,body{max-width:100%;overflow-x:hidden}.topbar,.map-screen,.quest-screen,.ga
 .q4-warning-btn{display:block;width:100%;margin-top:14px;padding:11px 14px;border:1px solid #ffcf5c;border-radius:10px;background:linear-gradient(135deg,rgba(255,193,52,.18),rgba(255,117,91,.12));color:#ffe48a;font:800 15px "Noto Sans Thai";cursor:pointer;transition:.18s}
 .q4-warning-btn:hover{transform:translateY(-1px);background:rgba(255,196,67,.25);box-shadow:0 0 20px rgba(255,186,44,.18)}
 .q4-rule-modal[hidden]{display:none}.q4-rule-modal{position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:18px;background:rgba(2,9,25,.82);backdrop-filter:blur(9px)}
+
+/* Stable mini-game layout: every control owns a grid cell and never floats
+   over another HUD item when a game is reopened at a different viewport. */
+body:has(.game-screen){overflow-x:hidden}
+.game-screen{width:100%;max-width:1500px;padding-top:16px}
+.game-hud{display:grid;grid-template-columns:auto minmax(150px,1fr) minmax(145px,auto) minmax(190px,1.2fr) auto auto auto;align-items:center;width:100%;height:auto;min-height:72px;gap:10px;margin:0 0 12px;position:relative;z-index:7}
+.game-hud>div,.game-hud>button{min-width:0;margin:0}
+.hud-mission{margin:0;padding-left:14px;overflow:hidden}
+.hud-mission b,#floorName{display:block;overflow-wrap:anywhere;line-height:1.25}
+.game-frame{width:100%;isolation:isolate}
+.game-frame .mobile-pad{z-index:8}
+.game-frame .action-orb{z-index:8}
+@media(max-width:1180px){
+  .game-hud{grid-template-columns:auto minmax(150px,1fr) minmax(180px,1fr) repeat(3,auto)}
+  .hud-party-power{display:none}
+}
+@media(max-width:820px){
+  .game-screen{padding:10px 7px 20px}
+  .game-hud{grid-template-columns:auto minmax(120px,1fr) repeat(3,auto);gap:7px;padding:7px 8px}
+  .hud-mission{grid-column:1/-1;border-left:0;border-top:1px solid #4779b5;padding:7px 0 0}
+  .map-pill{padding:8px 10px}
+}
+@media(max-width:560px){
+  .game-hud{grid-template-columns:auto minmax(100px,1fr) auto auto}
+  #previousFloorBtn{grid-column:3}
+  #openMapBtn{grid-column:4}
+  #sampleQuestBtn{grid-column:3/5;width:100%}
+  .hud-mission{grid-row:auto}
+}
 .q4-rule-modal-card{position:relative;width:min(650px,100%);max-height:calc(100vh - 36px);overflow:auto;padding:28px;border:2px solid #ffd45f;border-radius:22px;background:linear-gradient(150deg,#103867,#081d3b 68%,#24143c);box-shadow:0 30px 90px rgba(0,0,0,.72),0 0 35px rgba(255,197,67,.16);color:#eaf4ff}
 .q4-rule-modal-card h2{margin:4px 0 18px;color:#fff0a6;font:900 clamp(26px,5vw,38px) "Chakra Petch","Noto Sans Thai"}.q4-rule-modal-close{position:absolute;top:13px;right:13px;width:42px;height:42px;border:1px solid #5ca8db;border-radius:11px;background:#102e58;color:#fff;font-size:27px;cursor:pointer}
 .q4-rule-condition{margin:12px 0;padding:15px 17px;border-radius:14px;text-align:left}.q4-rule-condition b{display:block;margin-bottom:8px;font-size:17px}.q4-rule-condition li{margin:7px 0;line-height:1.55}.q4-rule-condition.good{border:1px solid #45e0b8;background:rgba(20,143,116,.16)}.q4-rule-condition.good b{color:#73f3ce}.q4-rule-condition.caution{border:1px solid #ff9a73;background:rgba(164,69,53,.17)}.q4-rule-condition.caution b{color:#ffbd8f}

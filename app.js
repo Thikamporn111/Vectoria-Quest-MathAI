@@ -6,7 +6,7 @@ const quests = [
   {id:5,name:'จักรพรรดิยูนิต ผู้คุมขนาดหนึ่ง',title:'ศึกพิชิตเวกเตอร์หนึ่งหน่วย',glyph:'V̂',quote:'เวกเตอร์ทุกตัวต้องผ่านการย่อขนาดให้เหลือหนึ่ง ก่อนจะเปิดเผยทิศทางที่แท้จริง!',map:'ปราสาท Unit Vector',rune:'รูนแห่งเวกเตอร์หนึ่งหน่วย',intro:'จักรพรรดิยูนิตผนึกทางออกไว้ด้วยกฎขนาดหนึ่ง เจ้าต้องทำ B และ C ให้เป็นเวกเตอร์หนึ่งหน่วย แล้วใช้ dot product ตัดสินความสัมพันธ์ของทิศทาง หากได้ -1 แปลว่าเวกเตอร์ทั้งสองชี้ตรงข้ามกัน',learn:{title:'Unit vector คือเวกเตอร์ที่ย่อให้ยาว 1',sample:'ให้ P = (3, 4) และ Q = (-3, -4) หา p̂ · q̂',steps:['|P| = |Q| = 5','หารแต่ละองค์ประกอบด้วยขนาด: p̂ = (3/5, 4/5)','q̂ = (-3/5, -4/5)','dot product = (3/5)(-3/5) + (4/5)(-4/5) = -25/25 = <b>-1</b>'],formula:'p̂ · q̂ = cos(θ) · ตรงข้ามกัน θ=180° จึงได้ <em>-1</em>'},hint:'จากตัวอย่างมาตรฐาน B = (21, -20) และ C = (-21, 20) จะเห็นว่า C = -B จึงมีทิศตรงข้ามกัน หลังทำเป็น unit vector ค่า dot product เท่ากับ cos(180°)',question:'จงคำนวณ dot product ระหว่าง unit vector ของ B กับ unit vector ของ C',inputs:[['dot','B̂ · Ĉ']],validate:v=>Number.isFinite(Number(v.dot))&&Math.abs(Number(v.dot)+1)<.001,explain:'ชัยชนะ! เมื่อใช้ B = (21, -20) และ C = (-21, 20) จะได้ |B| = |C| = 29, B̂ = (21/29, -20/29), Ĉ = (-21/29, 20/29) และ B̂ · Ĉ = (-441 - 400)/841 = -1 จึงชี้ตรงข้ามกัน',vectors:[[21,-20,'B̂','#55e6d9'],[-21,20,'Ĉ','#ffd166']]}
 ];
 
-const defaultState={completed:[],hp:5,xp:0,current:0,step:0,b:{x:21,y:-20},c:{x:-21,y:20},sound:true,adventure:{}};
+const defaultState={completed:[],hp:5,xp:0,current:0,step:0,b:{x:21,y:-20},c:{x:-21,y:20},sound:true,adventure:{},started:false};
 let state=loadState(); let selectedChoice=null;
 function loadState(){try{return {...defaultState,...JSON.parse(localStorage.getItem('vectoria-state')||'{}')}}catch{return {...defaultState}}}
 function save(){localStorage.setItem('vectoria-state',JSON.stringify(state));updateTopbar()}
@@ -474,7 +474,7 @@ renderChallenge=function(q){
 let gameLoop=0, gameKeys={}, gameWorld=null;
 const gameAvatarSheet=new Image();gameAvatarSheet.src='character-select-3d.png?v=1';
 function showAdventure(forcedFloor=null){
-  cancelAnimationFrame(gameLoop); gameKeys={}; const app=document.querySelector('#app');app.innerHTML='';app.append(document.querySelector('#gameTemplate').content.cloneNode(true));
+  state.started=true;save();cancelAnimationFrame(gameLoop); gameKeys={}; const app=document.querySelector('#app');app.innerHTML='';app.append(document.querySelector('#gameTemplate').content.cloneNode(true));
   const floor=forcedFloor===null?Math.min(state.completed.length,4):Math.max(0,Math.min(forcedFloor,state.completed.length,4)),q=quests[floor],canvas=document.querySelector('#gameCanvas'),ctx=canvas.getContext('2d');
   const configs=[
     {title:'ป่าพิกัด',item:'คริสตัลพิกัด',goal:3,top:'#123c67',bottom:'#06172a',accent:'#52eaff',tip:'เก็บคริสตัลตามจุดบนแผนที่ให้ครบ',items:[[315,165],[610,535],[900,235]],foes:[[460,330,1.7,1.2],[790,470,-1.5,1.4],[1040,365,1.2,-1.6]]},
@@ -636,14 +636,14 @@ state.sound=true;save();
 let musicVolume=Math.max(0,Math.min(1,Number(localStorage.getItem('vectoria-music-volume')??.5)));
 function showAudioStartGate(){
   if(document.querySelector('#audioStartGate')||!state.sound)return;
-  const hasSavedGame=state.completed.length>0||state.xp>0;
+  const hasSavedGame=Boolean(state.started||state.completed.length||state.xp||state.hp!==5||state.step||state.current||Object.keys(state.adventure||{}).length);
   document.body.insertAdjacentHTML('beforeend',`
     <section class="audio-start-gate" id="audioStartGate" role="dialog" aria-modal="true" aria-labelledby="audioGateTitle">
       <span>⚔</span>
       <b id="audioGateTitle">เข้าสู่เกม</b>
       <small>คลิกหนึ่งครั้งเพื่อเข้าเกม</small>
       <div class="audio-gate-actions">
-        ${hasSavedGame?'<button class="audio-gate-continue" id="continueLastGame">▶ เล่นต่อจากครั้งที่แล้ว</button>':''}
+        ${hasSavedGame?'<button class="audio-gate-continue" id="continueLastGame">▶ เล่นเกมต่อ</button>':''}
         <button class="audio-gate-start" id="startAdventure">${hasSavedGame?'เข้าสู่หน้าเกม':'เริ่มการผจญภัย →'}</button>
       </div>
     </section>`);

@@ -26,7 +26,10 @@ jobs:
       - name: Prepare game files
         run: |
           mkdir _site
-          cp index.html app.js styles.css graph.css hero-party.png _site/
+          cp index.html app.js styles.css graph.css multiplayer.css multiplayer.js gameplay-upgrade.css hero-party.png _site/
+          cp -r assets _site/ 2>/dev/null || true
+          cp *.mp3 _site/ 2>/dev/null || true
+          cp *.png _site/ 2>/dev/null || true
           touch _site/.nojekyll
       - name: Configure Pages
         uses: actions/configure-pages@v5

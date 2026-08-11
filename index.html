@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="styles.css?v=20260810-67" />
   <link rel="stylesheet" href="graph.css?v=20260810-55" />
   <link rel="stylesheet" href="multiplayer.css?v=20260809-7" />
+  <link rel="stylesheet" href="gameplay-upgrade.css?v=20260811-1" />
 </head>
 <body>
   <div class="mist mist-one"></div><div class="mist mist-two"></div>
@@ -27,7 +28,6 @@
   </header>
 
   <main id="app" tabindex="-1"></main>
-
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <template id="gameTemplate">
@@ -44,9 +44,7 @@
       <div class="game-frame">
         <canvas id="gameCanvas" width="1280" height="720" aria-label="พื้นที่เล่นเกม ใช้ปุ่มลูกศรหรือ WASD เพื่อเดิน"></canvas>
         <div class="game-dialog" id="gameDialog"><span class="dialog-face">💧</span><div><b>พิโกะ สไลม์พิกัด</b><p>เก็บคริสตัลทั้ง 3 เม็ด แล้วประตูบอสจะเปิด!</p></div><button id="closeDialog">เริ่มเลย!</button></div>
-        <div class="mobile-pad" aria-label="ปุ่มควบคุมตัวละคร">
-          <button data-key="ArrowUp">▲</button><button data-key="ArrowLeft">◀</button><button data-key="ArrowDown">▼</button><button data-key="ArrowRight">▶</button>
-        </div>
+        <div class="mobile-pad" aria-label="ปุ่มควบคุมตัวละคร"><button data-key="ArrowUp">▲</button><button data-key="ArrowLeft">◀</button><button data-key="ArrowDown">▼</button><button data-key="ArrowRight">▶</button></div>
         <button class="action-orb" id="actionBtn">⚔<small>เข้า</small></button>
       </div>
       <div class="game-help"><span>⌨️ เดิน: WASD / ปุ่มลูกศร</span><span>◆ เก็บคริสตัลให้ครบ</span><span>👾 หลบมอนสเตอร์เงา</span><span>⚔ เดินเข้าประตูเพื่อสู้บอส</span></div>
@@ -54,48 +52,14 @@
   </template>
 
   <template id="mapTemplate">
-    <section class="map-screen screen-in">
-      <div class="map-intro">
-        <p class="eyebrow">บทที่ 01 · อาณาจักรเวกเตอร์</p>
-        <h1><span>ศึกพิชิต</span><br><em>อาณาจักรเวกเตอร์</em></h1>
-        <p>ร่วมเดินทางกับ <b>อาริน อัศวินฝึกหัด</b> พิชิตดันเจี้ยนเวกเตอร์ทั้ง 5 ชั้น เรียนรู้เรื่องพิกัด เวกเตอร์ตรงข้าม ขนาดเวกเตอร์ การตั้งฉาก และ Unit Vector ก่อนเผชิญบอสโจทย์จริงในแต่ละด่าน!</p>
-        <div class="starter-note"><span>!</span><p><b>ไม่ต้องเก่งคณิตก่อน</b><br>ทุกด่านมีโจทย์ตัวอย่าง วิธีคิดทีละขั้น คำใบ้ และเฉลยหลังตอบ</p></div>
-        <div class="map-actions">
-          <button class="primary-btn" id="continueBtn">⚔ เริ่มผจญภัย <span>→</span></button>
-          <button class="text-btn" id="resetBtn">เริ่มเกมใหม่</button>
-        </div>
-      </div>
-      <div class="world-map" aria-label="แผนที่ดันเจี้ยน">
-        <div class="map-title"><span>แผนที่ป่าพิกัด</span><small id="mapProgress">ผ่านแล้ว 0 / 5 ด่าน</small></div>
-        <div class="route-line"></div>
-        <div id="dungeonNodes"></div>
-        <div class="map-decoration moon">☾</div>
-        <div class="map-decoration mountain">▲ ▲</div>
-        <div class="map-decoration trees">♠ ♠<br> ♠ ♠ ♠</div>
-        <div class="map-decoration ruins">▥</div>
-      </div>
-    </section>
+    <section class="map-screen screen-in"><div class="map-intro"><p class="eyebrow">บทที่ 01 · อาณาจักรเวกเตอร์</p><h1><span>ศึกพิชิต</span><br><em>อาณาจักรเวกเตอร์</em></h1><p>ร่วมเดินทางกับ <b>อาริน อัศวินฝึกหัด</b> พิชิตดันเจี้ยนเวกเตอร์ทั้ง 5 ชั้น เรียนรู้เรื่องพิกัด เวกเตอร์ตรงข้าม ขนาดเวกเตอร์ การตั้งฉาก และ Unit Vector ก่อนเผชิญบอสโจทย์จริงในแต่ละด่าน!</p><div class="starter-note"><span>!</span><p><b>ไม่ต้องเก่งคณิตก่อน</b><br>ทุกด่านมีโจทย์ตัวอย่าง วิธีคิดทีละขั้น คำใบ้ และเฉลยหลังตอบ</p></div><div class="map-actions"><button class="primary-btn" id="continueBtn">⚔ เริ่มผจญภัย <span>→</span></button><button class="text-btn" id="resetBtn">เริ่มเกมใหม่</button></div></div><div class="world-map" aria-label="แผนที่ดันเจี้ยน"><div class="map-title"><span>แผนที่ป่าพิกัด</span><small id="mapProgress">ผ่านแล้ว 0 / 5 ด่าน</small></div><div class="route-line"></div><div id="dungeonNodes"></div><div class="map-decoration moon">☾</div><div class="map-decoration mountain">▲ ▲</div><div class="map-decoration trees">♠ ♠<br> ♠ ♠ ♠</div><div class="map-decoration ruins">▥</div></div></section>
   </template>
 
   <template id="questTemplate">
-    <section class="quest-screen screen-in">
-      <aside class="quest-side">
-        <button class="back-btn" id="backBtn">← กลับแผนที่</button>
-        <p class="eyebrow" id="questNumber"></p>
-        <div class="boss-portrait" id="bossPortrait"><div class="boss-aura"></div><span id="bossGlyph"></span></div>
-        <h2 id="bossName"></h2>
-        <p id="bossTitle"></p>
-        <div class="boss-hp"><div class="boss-hp-label"><span>พลังบอส</span><b id="bossHpText">100%</b></div><div class="bar"><i id="bossHpBar"></i></div></div>
-        <blockquote id="bossQuote"></blockquote>
-      </aside>
-      <article class="quest-card">
-        <div class="stepper" id="stepper"></div>
-        <div id="questContent"></div>
-      </article>
-    </section>
+    <section class="quest-screen screen-in"><aside class="quest-side"><button class="back-btn" id="backBtn">← กลับแผนที่</button><p class="eyebrow" id="questNumber"></p><div class="boss-portrait" id="bossPortrait"><div class="boss-aura"></div><span id="bossGlyph"></span></div><h2 id="bossName"></h2><p id="bossTitle"></p><div class="boss-hp"><div class="boss-hp-label"><span>พลังบอส</span><b id="bossHpText">100%</b></div><div class="bar"><i id="bossHpBar"></i></div></div><blockquote id="bossQuote"></blockquote></aside><article class="quest-card"><div class="stepper" id="stepper"></div><div id="questContent"></div></article></section>
   </template>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.91.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.91.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
   <script src="app.js?v=20260810-73"></script>
   <script src="multiplayer.js?v=20260809-9"></script>
 </body>

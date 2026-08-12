@@ -1,0 +1,2 @@
+/* Background override for isolated e7d8 version only */
+body::after{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(rgba(3,10,20,.16),rgba(3,10,20,.28)),url('https://raw.githubusercontent.com/Thikamporn111/Vectoria-Quest-MathAI/agent/rpg-reference-v2/assets/map-night-bg.svg') center/cover no-repeat fixed;pointer-events:none}body{background:transparent!important}body::before{opacity:.22!important}.map-intro,.world-map{backdrop-filter:blur(1px)}

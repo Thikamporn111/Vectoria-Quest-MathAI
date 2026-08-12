@@ -1,8 +1,8 @@
-name: Deploy Vectoria Quest to GitHub Pages
+name: Deploy Vectoria Quest V2 to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [agent/rpg-reference-v2]
   workflow_dispatch:
 
 permissions:
@@ -21,12 +21,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout V2 branch
         uses: actions/checkout@v4
+        with:
+          ref: agent/rpg-reference-v2
       - name: Prepare game files
         run: |
           mkdir _site
-          cp index.html app.js styles.css graph.css multiplayer.css multiplayer.js gameplay-upgrade.css hero-party.png _site/
+          cp index.html app.js styles.css graph.css multiplayer.css multiplayer.js gameplay-upgrade.css pixel-remaster.css hero-party.png _site/
           cp -r assets _site/ 2>/dev/null || true
           cp *.mp3 _site/ 2>/dev/null || true
           cp *.png _site/ 2>/dev/null || true

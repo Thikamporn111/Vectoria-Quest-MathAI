@@ -1,0 +1,169 @@
+/* Character-selection lobby: code-only recreation of the approved fantasy mockup.
+   Loaded after fantasy-scroll-theme.css so this file wins without touching game logic. */
+
+body:has(.mp-shell){overflow-y:auto!important;background:#04111d url('assets/vectoria-night-bg.jpg') center/cover fixed no-repeat!important}
+body:has(.mp-shell) #app{position:relative!important;z-index:20!important;min-height:calc(100vh - 74px)!important;background:transparent!important}
+
+/* remove the old blue/dashboard container */
+.mp-shell{
+  width:min(1480px,calc(100% - 42px))!important;
+  max-width:1480px!important;
+  min-height:auto!important;
+  margin:18px auto 36px!important;
+  padding:18px 34px 24px!important;
+  display:block!important;
+  overflow:visible!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.mp-shell:before,.mp-shell:after{display:none!important}
+.mp-shell .mp-hero{display:none!important}
+.mp-shell .mp-setup-card{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+/* ===== ornate title plate ===== */
+.mp-setup-heading{
+  position:relative!important;
+  width:min(900px,82%)!important;
+  max-width:900px!important;
+  margin:0 auto 22px!important;
+  padding:24px 72px 22px!important;
+  text-align:center!important;
+  color:#ead09a!important;
+  background:
+    radial-gradient(circle at 50% -18%,rgba(53,199,218,.15),transparent 34%),
+    linear-gradient(180deg,rgba(4,17,29,.97),rgba(3,12,22,.98))!important;
+  border:2px solid #8e692d!important;
+  border-radius:0!important;
+  clip-path:polygon(4% 0,46% 0,48% 5%,50% 0,52% 5%,54% 0,96% 0,100% 17%,97% 50%,100% 83%,96% 100%,54% 100%,52% 95%,50% 100%,48% 95%,46% 100%,4% 100%,0 83%,3% 50%,0 17%)!important;
+  box-shadow:0 13px 28px rgba(0,0,0,.55),inset 0 0 30px rgba(0,0,0,.35)!important;
+}
+.mp-setup-heading:before{
+  content:'✦';position:absolute;left:50%;top:-16px;transform:translateX(-50%);
+  width:34px;height:34px;display:grid;place-items:center;
+  color:#54d7dc;font-size:18px;background:#081522;border:2px solid #bd8732;transform-origin:center;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);text-shadow:0 0 12px #43d5dd;
+}
+.mp-setup-heading:after{content:'';position:absolute;inset:8px 14px;border:1px solid rgba(190,137,50,.45);clip-path:inherit;pointer-events:none}
+.mp-setup-heading span{display:block!important;margin:0 0 4px!important;color:#59dce0!important;font:800 13px/1.2 'Chakra Petch'!important;letter-spacing:.12em!important}
+.mp-setup-heading h2{margin:0 0 5px!important;color:#efc873!important;font:800 clamp(31px,3.1vw,48px)/1.08 'Chakra Petch'!important;text-shadow:0 3px 0 #4b2b0d,0 0 16px rgba(219,163,66,.15)!important}
+.mp-setup-heading p{margin:0!important;color:#aa9c84!important;font-size:12px!important;line-height:1.5!important}
+
+/* ===== name strip ===== */
+.mp-name-block{
+  width:min(1120px,94%)!important;
+  margin:0 auto 18px!important;
+  padding:14px 22px!important;
+  display:grid!important;
+  grid-template-columns:150px minmax(320px,520px) 1fr!important;
+  gap:18px!important;
+  align-items:center!important;
+  background:linear-gradient(180deg,rgba(4,16,27,.94),rgba(3,12,21,.96))!important;
+  border:1px solid #775a2d!important;
+  box-shadow:inset 0 0 0 1px #171109,0 12px 28px rgba(0,0,0,.32)!important;
+}
+.mp-name-block .mp-label{margin:0!important;color:#e6ba56!important;font-size:15px!important;font-weight:800!important}
+.mp-name-block small{color:#968d7b!important;font-size:11px!important}
+.mp-name-input{
+  width:100%!important;height:48px!important;padding:10px 16px!important;
+  border:1px solid #765a30!important;border-radius:4px!important;
+  background:#050e17!important;color:#efe3cb!important;
+  font-size:17px!important;box-shadow:inset 0 0 14px rgba(0,0,0,.55)!important;
+}
+.mp-name-input::placeholder{color:#6f695f!important}.mp-name-input:focus{border-color:#c9963e!important;box-shadow:0 0 0 2px rgba(201,150,62,.16),inset 0 0 14px rgba(0,0,0,.55)!important}
+
+/* section caption */
+.mp-character-title{display:flex!important;justify-content:center!important;align-items:center!important;gap:11px!important;margin:7px 0 12px!important;color:#eac166!important;font-size:17px!important;font-weight:800!important}
+.mp-character-title:before,.mp-character-title:after{content:'◆'!important;color:#86642e!important;font-size:8px!important}
+
+/* ===== five hero cards ===== */
+.mp-avatar-grid{
+  width:min(1240px,100%)!important;margin:0 auto 17px!important;
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important;
+}
+.mp-avatar{
+  position:relative!important;height:340px!important;min-width:0!important;padding:0!important;overflow:hidden!important;
+  border:2px solid #75572c!important;border-radius:3px!important;
+  background:#071522!important;color:#efe6d2!important;
+  box-shadow:0 9px 20px rgba(0,0,0,.43),inset 0 0 0 1px #171109!important;
+  transform:none!important;isolation:isolate!important;
+}
+.mp-avatar:before{content:'';position:absolute;inset:6px;z-index:4;border:1px solid rgba(179,133,59,.38);pointer-events:none}
+.mp-avatar:after{content:''!important;position:absolute!important;inset:auto 0 0!important;height:96px!important;z-index:2!important;background:linear-gradient(180deg,transparent,#020a12 40%,#030c15 100%)!important;border:0!important;pointer-events:none!important}
+.mp-avatar-art{
+  position:absolute!important;inset:0!important;display:block!important;
+  background-image:url('character-select-3d.png?v=1')!important;
+  background-repeat:no-repeat!important;background-size:500% 100%!important;
+  background-position:calc(var(--sprite-index) * 25%) center!important;
+  filter:saturate(.98) contrast(1.02)!important;transition:filter .18s,transform .18s!important;
+}
+.mp-avatar-info{
+  position:absolute!important;z-index:5!important;left:0!important;right:0!important;bottom:0!important;
+  min-height:76px!important;padding:10px 12px!important;
+  display:grid!important;grid-template-columns:38px 1fr!important;grid-template-rows:auto auto!important;column-gap:9px!important;
+  align-items:center!important;text-align:left!important;background:transparent!important;
+}
+.mp-avatar-info i{grid-row:1/3!important;width:36px!important;height:36px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:#0a1d2d!important;border:1px solid var(--avatar)!important;font-style:normal!important;font-size:19px!important}
+.mp-avatar-info b{margin:0!important;color:#f3e6cc!important;font-size:15px!important;line-height:1.2!important}.mp-avatar-info small{color:#aa9d85!important;font-size:10px!important;line-height:1.2!important}
+.mp-avatar>em{position:absolute!important;z-index:7!important;right:8px!important;top:8px!important;padding:4px 8px!important;border-radius:2px!important;background:rgba(4,13,22,.88)!important;color:#c7baa1!important;font:700 10px 'Noto Sans Thai'!important;font-style:normal!important;border:1px solid rgba(116,88,46,.42)!important}
+.mp-avatar:hover{border-color:#bf8c36!important;box-shadow:0 12px 26px rgba(0,0,0,.5),0 0 14px rgba(191,140,54,.18)!important}.mp-avatar:hover .mp-avatar-art{filter:brightness(1.07) saturate(1.05)!important}
+.mp-avatar.selected{border-color:#50d2ea!important;box-shadow:0 0 0 2px #1d7891,0 0 18px rgba(80,210,234,.48),0 12px 28px rgba(0,0,0,.5)!important}
+.mp-avatar.selected:before{border-color:rgba(94,219,238,.44)!important}.mp-avatar.selected>em{background:#49cae5!important;color:#06141b!important;border-color:#82e7f6!important}.mp-avatar.selected>em:before{content:'✓ '!important}
+
+/* ===== player count strip ===== */
+.mp-size-picker{
+  width:min(1260px,100%)!important;margin:0 auto 12px!important;padding:13px 16px!important;
+  display:flex!important;justify-content:space-between!important;align-items:center!important;gap:20px!important;
+  background:linear-gradient(180deg,rgba(4,16,27,.95),rgba(3,12,21,.97))!important;border:1px solid #74572c!important;
+  box-shadow:inset 0 0 0 1px #161007!important;
+}
+.mp-size-picker>div:first-child{min-width:290px!important}.mp-size-picker .mp-label{margin:0 0 2px!important;color:#e7bb59!important;font-size:15px!important}.mp-size-picker small{display:block!important;color:#918a7c!important;font-size:10px!important}
+.mp-size-options{display:flex!important;gap:8px!important;flex-wrap:nowrap!important}.mp-size-options button{min-width:68px!important;height:44px!important;padding:0 14px!important;border-radius:3px!important;border:1px solid #654e2d!important;background:#07111b!important;color:#ddd2b9!important;font-weight:800!important;box-shadow:inset 0 0 12px rgba(0,0,0,.35)!important}
+.mp-size-options button:hover{border-color:#a47a34!important}.mp-size-options button.selected{background:linear-gradient(#f4d674,#c9912e)!important;color:#24170a!important;border-color:#ffe49a!important;box-shadow:0 0 0 2px #6c4b1c,0 0 15px rgba(222,167,66,.42)!important}
+
+/* ===== bottom room actions ===== */
+.mp-actions{
+  width:min(1260px,100%)!important;margin:0 auto!important;padding:12px 16px!important;
+  display:grid!important;grid-template-columns:minmax(300px,390px) 82px minmax(430px,1fr)!important;grid-template-rows:72px!important;
+  gap:12px!important;align-items:center!important;
+  background:linear-gradient(180deg,rgba(4,16,27,.96),rgba(3,12,21,.98))!important;border:1px solid #74572c!important;
+  box-shadow:inset 0 0 0 1px #161007!important;
+}
+.mp-main-action{grid-column:1!important;grid-row:1!important;height:72px!important;padding:10px 18px!important;border-radius:3px!important;border:1px solid #806022!important;background:linear-gradient(180deg,#f2cf6b,#c98f2d)!important;color:#211607!important;font-size:18px!important;font-weight:900!important;line-height:1.25!important;box-shadow:inset 0 0 0 2px rgba(255,239,169,.28),0 3px 0 #63410f!important}
+.mp-main-action:after{content:'สร้างห้องและเชิญเพื่อนเข้ามา';display:block;margin-top:2px;font-size:10px;font-weight:600;color:#56370d}
+.mp-actions:before{content:'หรือ';grid-column:2!important;grid-row:1!important;align-self:center;justify-self:center;color:#d7b65f;font-weight:800;font-size:18px}
+.mp-join-row{grid-column:3!important;grid-row:1!important;height:72px!important;display:grid!important;grid-template-columns:minmax(230px,1fr) 170px!important;gap:12px!important;align-items:stretch!important}
+.mp-join-row input{height:72px!important;padding:0 18px!important;border:1px solid #74572c!important;border-radius:3px!important;background:#050e17!important;color:#ede2ca!important;font-size:17px!important;box-shadow:inset 0 0 14px rgba(0,0,0,.45)!important}.mp-join-row input::placeholder{color:#6e685d!important}
+.mp-join-row button{height:72px!important;padding:9px 16px!important;border-radius:3px!important;border:1px solid #a17835!important;background:linear-gradient(180deg,#27588b,#15355d)!important;color:#ecd69a!important;font-size:18px!important;font-weight:900!important;line-height:1.2!important;box-shadow:inset 0 0 0 2px rgba(83,135,198,.24),0 3px 0 #0a203d!important}
+.mp-join-row button:after{content:'เข้าร่วมห้องด้วยรหัส';display:block;margin-top:3px;font-size:9px;font-weight:600;color:#aebcd0}
+.mp-solo{display:block!important;margin:14px auto 0!important;padding:0 0 3px!important;border:0!important;border-bottom:1px solid #a47a36!important;background:none!important;color:#d5b35b!important;text-decoration:none!important;font-size:13px!important;cursor:pointer!important}.mp-solo:hover{color:#f1cf75!important}
+.mp-message{min-height:0!important;margin:7px 0 0!important;color:#73dbe1!important}.mp-message:empty{display:none!important}.mp-message.error{color:#ff9b9b!important}
+
+/* top HUD on this page — keep it dark/gold like the mockup */
+body:has(.mp-shell) .topbar{background:rgba(3,12,21,.97)!important;border-bottom:1px solid #6f5228!important;box-shadow:0 4px 18px rgba(0,0,0,.45)!important}
+body:has(.mp-shell) .hero-stats>div,body:has(.mp-shell) .game-save-btn,body:has(.mp-shell) .game-exit-btn,body:has(.mp-shell) .sound-btn{background:#07121e!important;border-color:#6e5129!important;border-radius:3px!important;box-shadow:none!important}
+
+@media(max-width:1050px){
+  .mp-shell{width:calc(100% - 18px)!important;padding:14px 10px 22px!important}
+  .mp-setup-heading{width:94%!important;padding:22px 36px!important}
+  .mp-name-block{width:100%!important;grid-template-columns:150px 1fr!important}.mp-name-block small{grid-column:2!important}
+  .mp-avatar-grid{grid-template-columns:repeat(3,minmax(170px,1fr))!important}.mp-avatar{height:320px!important}
+  .mp-actions{grid-template-columns:1fr!important;grid-template-rows:auto!important}.mp-main-action,.mp-actions:before,.mp-join-row{grid-column:1!important;grid-row:auto!important}.mp-actions:before{padding:2px 0}.mp-join-row{height:66px!important}
+}
+@media(max-width:650px){
+  .mp-setup-heading{width:100%!important;padding:20px 22px!important}.mp-setup-heading h2{font-size:28px!important}
+  .mp-name-block{grid-template-columns:1fr!important;gap:7px!important}.mp-name-block small{grid-column:1!important}
+  .mp-avatar-grid{grid-template-columns:repeat(2,minmax(130px,1fr))!important;gap:8px!important}.mp-avatar{height:260px!important}
+  .mp-size-picker{align-items:flex-start!important;flex-direction:column!important}.mp-size-options{width:100%!important;display:grid!important;grid-template-columns:repeat(5,1fr)!important}.mp-size-options button{min-width:0!important;padding:0 5px!important}
+  .mp-join-row{grid-template-columns:1fr!important;height:auto!important}.mp-join-row input,.mp-join-row button,.mp-main-action{height:58px!important}
+}

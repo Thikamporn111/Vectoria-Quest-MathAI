@@ -404,3 +404,23 @@ body.modal-open{overflow:hidden}@media(max-width:560px){.q4-rule-modal{padding:6
 @media(max-height:560px) and (orientation:landscape){
   .game-frame .game-dialog{left:175px;right:92px;bottom:10px;max-height:45%;overflow:auto}
 }
+
+/* Floor 4: keep the briefing, training and boss instructions easy to scan. */
+.q4-readable .content-title{
+  margin:10px 0 22px;padding:18px 20px;border-left:6px solid #ffd65b;border-radius:0 16px 16px 0;
+  background:linear-gradient(90deg,rgba(255,214,91,.15),rgba(24,91,164,.08));
+  color:#fff3b0;line-height:1.35;text-wrap:balance
+}
+.q4-readable .lore-box,.q4-readable .q4-rule,.q4-readable .q4-step-card,.q4-readable .challenge-box{
+  box-shadow:0 12px 28px rgba(0,0,0,.22);border-color:rgba(94,197,255,.5)
+}
+.q4-readable.q4-room-prep .lore-box{font-size:1.05rem;border-left:5px solid #55e6d9;padding:22px 24px}
+.q4-readable.q4-room-training .q4-step-card{margin:16px 0;padding:18px}
+.q4-readable.q4-room-training .q4-step-card h3{color:#fff09c;font-size:1.16rem;margin-top:0}
+.q4-mission-banner{display:grid;gap:6px;margin:0 0 22px;padding:16px 18px;border:1px solid rgba(85,230,217,.55);border-radius:14px;background:rgba(7,33,69,.72)}
+.q4-mission-banner small{color:#6ee8ff;font-weight:800;letter-spacing:.08em}
+.q4-mission-banner strong{color:#fff;font-size:clamp(1rem,2.2vw,1.25rem);line-height:1.65}
+.q4-readable.q4-room-boss .challenge-box{padding:22px;border:2px solid #ffd65b;border-radius:18px;background:rgba(5,25,57,.72)}
+.q4-readable.q4-room-boss .q4-boss-given{margin-top:0}
+.q4-readable .q4-calc{line-height:1.9}
+@media(max-width:560px){.q4-readable .content-title{font-size:23px;padding:14px 12px}.q4-readable.q4-room-boss .challenge-box{padding:14px}}

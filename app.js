@@ -1074,7 +1074,7 @@ simplifyQ4Lesson=function(){
   const title=document.querySelector('.q4-clean')?.closest('#questContent')?.querySelector('.content-title');
   if(!title)return;
   title.textContent='ไขรหัสมุมฉาก พิชิตเส้นทาง 90°';
-  title.insertAdjacentHTML('afterend','<div class="q4-mission-banner"><small>คำสั่งโจทย์ฝึก</small><strong>จงหา B ที่ตั้งฉากกับ A และ C ที่ตั้งฉากกับ -A</strong></div>');
+  title.insertAdjacentHTML('afterend','<div class="q4-mission-banner"><small>โจทย์ฝึกด่าน 4</small><strong>ฝึกหา B ที่ตั้งฉากกับ A และ C ที่ตั้งฉากกับ -A</strong></div>');
 };
 
 quests.find(q=>q.id===4).question='จงหา B ที่ตั้งฉากกับ A และ C ที่ตั้งฉากกับ -A';

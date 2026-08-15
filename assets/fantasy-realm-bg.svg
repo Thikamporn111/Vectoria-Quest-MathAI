@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1">
+      <stop offset="0" stop-color="#050b1a"/>
+      <stop offset=".45" stop-color="#0a1a33"/>
+      <stop offset="1" stop-color="#0d2a2a"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff6d8" stop-opacity=".9"/>
+      <stop offset=".35" stop-color="#ffe9a8" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonBody" cx="38%" cy="35%" r="65%">
+      <stop offset="0" stop-color="#fffdf3"/>
+      <stop offset="1" stop-color="#e9d69a"/>
+    </radialGradient>
+    <linearGradient id="ridgeFar" x2="0" y2="1">
+      <stop offset="0" stop-color="#16324f"/>
+      <stop offset="1" stop-color="#0c2033"/>
+    </linearGradient>
+    <linearGradient id="ridgeNear" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1c2c"/>
+      <stop offset="1" stop-color="#060f18"/>
+    </linearGradient>
+    <linearGradient id="riverGlow" x2="0" y2="1">
+      <stop offset="0" stop-color="#7ee8ff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#7ee8ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+
+  <!-- stars -->
+  <g fill="#bfe3ff">
+    <circle cx="70" cy="70" r="1.6"/><circle cx="150" cy="140" r="1.2"/><circle cx="260" cy="60" r="1.6"/>
+    <circle cx="340" cy="150" r="1.1"/><circle cx="430" cy="80" r="1.6"/><circle cx="520" cy="40" r="1.2"/>
+    <circle cx="610" cy="120" r="1.6"/><circle cx="700" cy="60" r="1.1"/><circle cx="790" cy="150" r="1.6"/>
+    <circle cx="60" cy="230" r="1.2"/><circle cx="220" cy="210" r="1.4"/><circle cx="380" cy="240" r="1.1"/>
+    <circle cx="900" cy="90" r="1.4"/><circle cx="980" cy="160" r="1.1"/><circle cx="1060" cy="55" r="1.6"/>
+    <circle cx="1160" cy="130" r="1.2"/><circle cx="1250" cy="70" r="1.6"/><circle cx="1340" cy="160" r="1.1"/>
+    <circle cx="1420" cy="90" r="1.6"/><circle cx="1500" cy="150" r="1.2"/><circle cx="1560" cy="60" r="1.4"/>
+    <circle cx="470" cy="200" r="1.2"/><circle cx="640" cy="220" r="1.1"/>
+  </g>
+
+  <!-- faint coordinate-plane constellation (nods to the vector curriculum) -->
+  <g stroke="#4fd7e0" stroke-width="1.4" fill="none" opacity=".28">
+    <line x1="360" y1="205" x2="360" y2="70"/>
+    <line x1="270" y1="150" x2="470" y2="150"/>
+    <path d="M360 150 L420 95" marker-end="url(#arrow)"/>
+    <path d="M355 75 L360 65 L365 75" fill="none"/>
+    <path d="M460 145 L470 150 L460 155" fill="none"/>
+  </g>
+  <g fill="#4fd7e0" opacity=".28" font-family="Georgia, serif" font-size="14">
+    <text x="472" y="154">x</text>
+    <text x="366" y="66">y</text>
+  </g>
+
+  <!-- moon -->
+  <circle cx="1310" cy="150" r="150" fill="url(#moonGlow)"/>
+  <circle cx="1310" cy="150" r="58" fill="url(#moonBody)"/>
+  <g fill="#d9c589" opacity=".55">
+    <circle cx="1292" cy="132" r="8"/>
+    <circle cx="1326" cy="150" r="5"/>
+    <circle cx="1300" cy="168" r="10"/>
+  </g>
+
+  <!-- far ridge -->
+  <path d="M0 470 L90 400 170 445 260 380 360 460 460 390 560 450 660 375 760 455 860 385 960 450 1060 380 1160 455 1260 390 1360 450 1460 385 1560 445 1600 420 V1000 H0 Z" fill="url(#ridgeFar)" opacity=".8"/>
+
+  <!-- distant castle silhouette, echoing the final "Unit Vector" stronghold -->
+  <g fill="#0c2136" opacity=".85">
+    <path d="M120 430 h26 v-58 h16 v58 h22 v-80 h16 v80 h24 v-46 h16 v46 h20 v58 h-140 z"/>
+    <rect x="150" y="360" width="10" height="16"/>
+    <rect x="196" y="336" width="10" height="16"/>
+    <rect x="238" y="372" width="10" height="16"/>
+  </g>
+
+  <!-- near ridge with tree line -->
+  <path d="M0 620 L120 560 240 615 380 545 520 610 660 555 800 615 940 550 1080 610 1220 555 1360 615 1500 560 1600 600 V1000 H0 Z" fill="url(#ridgeNear)"/>
+  <g fill="#081a14" opacity=".9">
+    <path d="M60 640 l18 -34 18 34 z"/><path d="M96 645 l16 -30 16 30 z"/><path d="M140 638 l18 -34 18 34 z"/>
+    <path d="M980 632 l18 -34 18 34 z"/><path d="M1020 640 l16 -30 16 30 z"/><path d="M1064 634 l18 -34 18 34 z"/>
+    <path d="M1300 636 l18 -34 18 34 z"/><path d="M1340 642 l16 -30 16 30 z"/>
+  </g>
+
+  <!-- glowing river winding toward the viewer -->
+  <path d="M760 640 Q820 720 740 800 T820 1000" stroke="url(#riverGlow)" stroke-width="26" fill="none" opacity=".5"/>
+  <path d="M760 640 Q820 720 740 800 T820 1000" stroke="#bff3ff" stroke-width="3" fill="none" opacity=".35"/>
+
+  <!-- foreground tree silhouettes -->
+  <g fill="#040d0a">
+    <path d="M0 760 Q120 700 260 750 T520 730 700 770 900 720 1120 760 1320 715 1600 760 V1000 H0 Z"/>
+  </g>
+</svg>

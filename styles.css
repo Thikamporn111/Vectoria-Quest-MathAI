@@ -404,3 +404,5 @@ body.modal-open{overflow:hidden}@media(max-width:560px){.q4-rule-modal{padding:6
 @media(max-height:560px) and (orientation:landscape){
   .game-frame .game-dialog{left:175px;right:92px;bottom:10px;max-height:45%;overflow:auto}
 }
+/* Floor 4 heading hierarchy. */
+.q4-training-subtitle{margin:8px 0 22px;color:#c9d9ec;font-size:clamp(.95rem,1.8vw,1.15rem);font-weight:700;line-height:1.65}

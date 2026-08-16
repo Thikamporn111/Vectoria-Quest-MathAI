@@ -234,16 +234,14 @@ showManualQ4Coordinates=function(){
 
 enhanceManualQ4Canvas=function(){};
 
-setupManualQ4Drawing=function(){
-  const actions=document.querySelector('.action-row');if(!actions)return;
-  actions.insertAdjacentHTML('beforebegin','<section class="manual-q4-draw"><h3>ฝึกพล็อตกราฟด้วยตัวเอง</h3><p>เริ่มจากกราฟเปล่า แล้วพล็อต A, -A, B และ C ตามลำดับ</p><div class="graph-coord" id="manualQ4Coord">ขั้นที่ 1/4: พล็อต A</div><canvas id="manualQ4Canvas" width="600" height="600"></canvas><div class="graph-result" id="manualQ4Result">คลิกพิกัดปลาย A = (4, -3)</div></section>');
-  const c=document.querySelector('#manualQ4Canvas'),ctx=c.getContext('2d'),origin=300,scale=50;
-  const targets=[[4,-3,'A','#48d8ff'],[-4,3,'-A','#b77cff'],[-3,-4,'B','#ffe066'],[3,4,'C','#65efb6']];
-  let stage=0,drawn=[];
-  const arrow=v=>{const ex=origin+v[0]*scale,ey=origin-v[1]*scale,a=Math.atan2(ey-origin,ex-origin);ctx.save();ctx.strokeStyle=ctx.fillStyle=v[3];ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(origin,origin);ctx.lineTo(ex,ey);ctx.stroke();ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-20*Math.cos(a-.5),ey-20*Math.sin(a-.5));ctx.lineTo(ex-20*Math.cos(a+.5),ey-20*Math.sin(a+.5));ctx.closePath();ctx.fill();ctx.beginPath();ctx.arc(ex,ey,8,0,Math.PI*2);ctx.fill();ctx.font='800 16px Chakra Petch';ctx.textAlign=v[0]>=0?'right':'left';ctx.fillText(v[2],ex+(v[0]>=0?-12:12),ey-14);ctx.restore()};
-  const draw=()=>{ctx.fillStyle='#06172f';ctx.fillRect(0,0,600,600);for(let i=-5;i<=5;i++){const p=origin+i*scale;ctx.strokeStyle=i===0?'#e5efff':'rgba(102,160,213,.25)';ctx.lineWidth=i===0?3:1;ctx.beginPath();ctx.moveTo(p,25);ctx.lineTo(p,575);ctx.moveTo(25,p);ctx.lineTo(575,p);ctx.stroke();if(i!==0){ctx.fillStyle='#c6dcf1';ctx.font='13px Chakra Petch';ctx.textAlign='center';ctx.fillText(i,p,origin+18);ctx.textAlign='right';ctx.fillText(-i,origin-8,p+4)}}drawn.forEach(arrow);ctx.fillStyle='#ffcf4d';ctx.beginPath();ctx.arc(origin,origin,6,0,Math.PI*2);ctx.fill()};
-  c.onclick=e=>{if(stage>=targets.length)return;const r=c.getBoundingClientRect(),gx=Math.max(-5,Math.min(5,Math.round((((e.clientX-r.left)*600/r.width)-origin)/scale))),gy=Math.max(-5,Math.min(5,Math.round((origin-((e.clientY-r.top)*600/r.height))/scale))),target=targets[stage],ok=gx===target[0]&&gy===target[1],result=document.querySelector('#manualQ4Result'),coord=document.querySelector('#manualQ4Coord');if(!ok){beep(false);result.className='graph-result wrong';result.textContent=`จุด (${gx}, ${gy}) ยังไม่ใช่ปลายของ ${target[2]} ลองใหม่`;return}drawn.push(target);stage++;beep(true);draw();if(stage===targets.length){coord.textContent='พล็อตครบทั้ง 4 เวกเตอร์แล้ว';result.className='graph-result correct';result.textContent='✓ พล็อต A, -A, B และ C ครบด้วยตัวเองแล้ว'}else{coord.textContent=`ขั้นที่ ${stage+1}/4: พล็อต ${targets[stage][2]}`;result.className='graph-result correct';result.textContent=`✓ พล็อต ${target[2]} ถูกต้อง ต่อไปพล็อต ${targets[stage][2]} = (${targets[stage][0]}, ${targets[stage][1]})`}};
-  draw();
+setupManualQ4Drawing=function(){};
+
+const simplifyQ4LessonBeforeHeading=simplifyQ4Lesson;
+simplifyQ4Lesson=function(){
+  simplifyQ4LessonBeforeHeading();
+  const title=document.querySelector('#questContent .content-title');if(!title)return;
+  title.textContent='ไขรหัสมุมฉาก พิชิตเส้นทาง 90°';
+  title.insertAdjacentHTML('afterend','<p class="q4-training-subtitle">ฝึกหา B ที่ตั้งฉากกับ A และ C ที่ตั้งฉากกับ -A</p>');
 };
 
 setupUniversalScratchpad=function(){

@@ -91,7 +91,7 @@ function renderQ4Lesson(){const root=document.querySelector('#questContent');roo
 function drawCleanQ4Graph(){const c=document.querySelector('#cleanQ4Graph'),x=c.getContext('2d'),o=300,s=50,vs=[[4,-3,'A','#48d8ff'],[-4,3,'-A','#b77cff'],[-3,-4,'B','#ffe066'],[3,4,'C','#65efb6']];x.fillStyle='#06172f';x.fillRect(0,0,600,600);for(let i=-5;i<=5;i++){const p=o+i*s;x.strokeStyle=i===0?'#e4efff':'rgba(100,157,211,.25)';x.lineWidth=i===0?3:1;x.beginPath();x.moveTo(p,25);x.lineTo(p,575);x.moveTo(25,p);x.lineTo(575,p);x.stroke()}vs.forEach(v=>{const ex=o+v[0]*s,ey=o-v[1]*s,a=Math.atan2(ey-o,ex-o);x.strokeStyle=x.fillStyle=v[3];x.lineWidth=9;x.shadowBlur=14;x.shadowColor=v[3];x.beginPath();x.moveTo(o,o);x.lineTo(ex,ey);x.stroke();x.shadowBlur=0;x.beginPath();x.moveTo(ex,ey);x.lineTo(ex-20*Math.cos(a-.5),ey-20*Math.sin(a-.5));x.lineTo(ex-20*Math.cos(a+.5),ey-20*Math.sin(a+.5));x.closePath();x.fill()});const mark=(v1,v2)=>{const n1=Math.hypot(v1[0],v1[1]),n2=Math.hypot(v2[0],v2[1]),u=[v1[0]/n1,-v1[1]/n1],v=[v2[0]/n2,-v2[1]/n2],r=48,p1=[o+u[0]*r,o+u[1]*r],corner=[o+(u[0]+v[0])*r,o+(u[1]+v[1])*r],p2=[o+v[0]*r,o+v[1]*r],lx=o+(u[0]+v[0])*75,ly=o+(u[1]+v[1])*75;x.save();x.fillStyle='rgba(255,88,211,.25)';x.strokeStyle='#ff75dc';x.lineWidth=7;x.shadowBlur=20;x.shadowColor='#ff4fcf';x.beginPath();x.moveTo(o,o);x.lineTo(p1[0],p1[1]);x.lineTo(corner[0],corner[1]);x.lineTo(p2[0],p2[1]);x.closePath();x.fill();x.stroke();x.shadowBlur=0;x.fillStyle='#ff9be4';x.font='900 23px Chakra Petch';x.textAlign='center';x.fillText('90°',lx,ly+8);x.restore()};mark(vs[0],vs[2]);mark(vs[1],vs[3])}
 
 const drawCleanQ4GraphBase=drawCleanQ4Graph;
-drawCleanQ4Graph=function(){drawCleanQ4GraphBase();const c=document.querySelector('#cleanQ4Graph'),x=c.getContext('2d'),o=300,s=50,vs=[[4,-3,'A','#48d8ff'],[-4,3,'-A','#b77cff'],[-3,-4,'B','#ffe066'],[3,4,'C','#65efb6']],offsets=[[-104,46],[104,-42],[104,44],[-104,-42]];vs.forEach((v,i)=>{const ex=o+v[0]*s,ey=o-v[1]*s,lx=ex+offsets[i][0],ly=ey+offsets[i][1],label=`${v[2]} (${v[0]}, ${v[1]})`,a=Math.atan2(ey-o,ex-o);x.save();x.strokeStyle=v[3];x.lineWidth=2;x.setLineDash([6,5]);x.beginPath();x.moveTo(ex,ey);x.lineTo(lx,ly);x.stroke();x.setLineDash([]);x.shadowBlur=18;x.shadowColor=v[3];x.fillStyle='#ffffff';x.beginPath();x.arc(ex,ey,13,0,Math.PI*2);x.fill();x.fillStyle=v[3];x.beginPath();x.arc(ex,ey,8,0,Math.PI*2);x.fill();x.shadowBlur=0;x.beginPath();x.moveTo(ex,ey);x.lineTo(ex-24*Math.cos(a-.55),ey-24*Math.sin(a-.55));x.lineTo(ex-24*Math.cos(a+.55),ey-24*Math.sin(a+.55));x.closePath();x.fill();x.font='800 16px Chakra Petch';const w=x.measureText(label).width+18;x.fillStyle='rgba(4,18,39,.94)';x.strokeStyle=v[3];x.lineWidth=3;x.beginPath();x.roundRect(lx-w/2,ly-17,w,34,9);x.fill();x.stroke();x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.fillText(label,lx,ly+1);x.restore()})};
+drawCleanQ4Graph=function(){drawCleanQ4GraphBase();const c=document.querySelector('#cleanQ4Graph'),x=c.getContext('2d'),o=300,s=50,vs=[[4,-3,'A','#48d8ff'],[-4,3,'-A','#b77cff'],[-3,-4,'B','#ffe066'],[3,4,'C','#65efb6']],offsets=[[-104,46],[104,-42],[104,44],[-104,-42]];vs.forEach((v,i)=>{const ex=o+v[0]*s,ey=o-v[1]*s,lx=ex+offsets[i][0],ly=ey+offsets[i][1],label=`${v[2]} (${v[0]}, ${v[1]})`,a=Math.atan2(ey-o,ex-o);x.save();x.strokeStyle=v[3];x.lineWidth=2;x.setLineDash([6,5]);x.beginPath();x.moveTo(ex,ey);x.lineTo(lx,ly);x.stroke();x.setLineDash([]);x.shadowBlur=18;x.shadowColor=v[3];x.fillStyle='#ffffff';x.beginPath();x.arc(ex,ey,13,0,Math.PI*2);x.fill();x.fillStyle=v[3];x.beginPath();x.arc(ex,ey,8,0,Math.PI*2);x.fill();x.shadowBlur=0;x.beginPath();x.moveTo(ex,ey);x.lineTo(ex-24*Math.cos(a-.55),ey-24*Math.sin(a-.55));x.lineTo(ex-24*Math.cos(a+.55),ey-24*Math.sin(a+.55));x.closePath();x.fill();x.font='800 16px Chakra Petch';const textWidth=x.measureText(label).width,w=textWidth+18;x.fillStyle='rgba(4,18,39,.94)';x.strokeStyle=v[3];x.lineWidth=3;x.beginPath();x.roundRect(lx-w/2,ly-17,w,34,9);x.fill();x.stroke();x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.fillText(label,lx,ly+1);drawCanvasVectorArrowMark(x,v[2],lx-textWidth/2,ly+6,'#fff','800 16px Chakra Petch');x.restore()})};
 
 const drawCleanQ4GraphWithPoints=drawCleanQ4Graph;
 drawCleanQ4Graph=function(){drawCleanQ4GraphWithPoints();const c=document.querySelector('#cleanQ4Graph'),x=c.getContext('2d'),o=300,s=50;x.save();x.font='700 14px Chakra Petch';x.textBaseline='middle';for(let i=-5;i<=5;i++){if(i===0)continue;const p=o+i*s;x.fillStyle='#d6e8fb';x.textAlign='center';x.fillText(String(i),p,o+18);x.textAlign='right';x.fillText(String(-i),o-9,p)}x.fillStyle='#fff08a';x.font='800 14px Chakra Petch';x.textAlign='right';x.fillText('0',o-9,o+17);x.fillStyle='#9fe9ff';x.font='900 17px Chakra Petch';x.textAlign='center';x.fillText('x',574,o-14);x.fillText('y',o+16,27);const theta=(px,py)=>{x.fillStyle='rgba(45,5,48,.96)';x.strokeStyle='#ff78dc';x.lineWidth=3;x.beginPath();x.roundRect(px-55,py-19,110,38,10);x.fill();x.stroke();x.fillStyle='#ff9ee7';x.font='900 20px Chakra Petch';x.textAlign='center';x.fillText('θ = 90°',px,py+1)};theta(o+83,o-52);theta(o-86,o+55);x.restore()};
@@ -217,7 +217,7 @@ setupInteractiveCleanGraph=function(){
   let picks=[],complete=false;
   const inputs=()=>['cleanBx','cleanBy','cleanCx','cleanCy'].map(id=>document.querySelector('#'+id));
   const fieldsReady=()=>inputs().every(el=>el&&el.value.trim()!=='');
-  const arrow=v=>{const ex=o+v[0]*s,ey=o-v[1]*s,a=Math.atan2(ey-o,ex-o);ctx.save();ctx.strokeStyle=ctx.fillStyle=v[3];ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(o,o);ctx.lineTo(ex,ey);ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ex,ey,11,0,Math.PI*2);ctx.fill();ctx.fillStyle=v[3];ctx.beginPath();ctx.arc(ex,ey,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-24*Math.cos(a-.55),ey-24*Math.sin(a-.55));ctx.lineTo(ex-24*Math.cos(a+.55),ey-24*Math.sin(a+.55));ctx.closePath();ctx.fill();const label=`${v[2]} = (${v[0]}, ${v[1]})`,lx=ex+(v[0]>0?-78:78),ly=ey+(v[1]>0?-25:28);ctx.font='800 15px Chakra Petch';const w=ctx.measureText(label).width+16;ctx.fillStyle='rgba(4,18,39,.94)';ctx.strokeStyle=v[3];ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(lx-w/2,ly-16,w,32,8);ctx.fill();ctx.stroke();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,lx,ly);ctx.restore()};
+  const arrow=v=>{const ex=o+v[0]*s,ey=o-v[1]*s,a=Math.atan2(ey-o,ex-o);ctx.save();ctx.strokeStyle=ctx.fillStyle=v[3];ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(o,o);ctx.lineTo(ex,ey);ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ex,ey,11,0,Math.PI*2);ctx.fill();ctx.fillStyle=v[3];ctx.beginPath();ctx.arc(ex,ey,7,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-24*Math.cos(a-.55),ey-24*Math.sin(a-.55));ctx.lineTo(ex-24*Math.cos(a+.55),ey-24*Math.sin(a+.55));ctx.closePath();ctx.fill();const label=`${v[2]} = (${v[0]}, ${v[1]})`,lx=ex+(v[0]>0?-78:78),ly=ey+(v[1]>0?-25:28);ctx.font='800 15px Chakra Petch';const textWidth=ctx.measureText(label).width,w=textWidth+16;ctx.fillStyle='rgba(4,18,39,.94)';ctx.strokeStyle=v[3];ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(lx-w/2,ly-16,w,32,8);ctx.fill();ctx.stroke();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,lx,ly);drawCanvasVectorArrowMark(ctx,v[2],lx-textWidth/2,ly+5,'#fff','800 15px Chakra Petch');ctx.restore()};
   const guides=v=>{const ex=o+v[0]*s,ey=o-v[1]*s;ctx.save();ctx.strokeStyle=v[3];ctx.globalAlpha=.65;ctx.lineWidth=2;ctx.setLineDash([7,7]);ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex,o);ctx.moveTo(ex,ey);ctx.lineTo(o,ey);ctx.stroke();ctx.restore()};
   const theta=(px,py)=>{ctx.save();ctx.fillStyle='rgba(45,5,48,.96)';ctx.strokeStyle='#ff78dc';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(px-55,py-19,110,38,10);ctx.fill();ctx.stroke();ctx.fillStyle='#ff9ee7';ctx.font='900 20px Chakra Petch';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('θ = 90°',px,py);ctx.restore()};
   const draw=()=>{ctx.fillStyle='#06172f';ctx.fillRect(0,0,600,600);for(let i=-5;i<=5;i++){const p=o+i*s;ctx.strokeStyle=i===0?'#e6f0ff':'rgba(101,158,211,.25)';ctx.lineWidth=i===0?3:1;ctx.beginPath();ctx.moveTo(p,25);ctx.lineTo(p,575);ctx.moveTo(25,p);ctx.lineTo(575,p);ctx.stroke();if(i!==0){ctx.fillStyle='#c9def2';ctx.font='13px Chakra Petch';ctx.textAlign='center';ctx.fillText(i,p,o+18);ctx.textAlign='right';ctx.fillText(-i,o-8,p+4)}}[...given,...picks].forEach(v=>{guides(v);arrow(v)});if(complete){theta(o+83,o-52);theta(o-86,o+55)}};
@@ -801,26 +801,26 @@ function drawCanvasVectorName(ctx, label, x, y, color) {
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = color;
   ctx.fillText(name, x, y);
-
-  const prefixWidth = name.startsWith('-') ? ctx.measureText('-').width : 0;
-  const letter = name.replace(/^-/, '').charAt(0);
-  const letterWidth = Math.max(12, ctx.measureText(letter).width);
-  const left = x + prefixWidth;
-  const top = y - 22;
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = 1.8;
-  ctx.beginPath();
-  ctx.moveTo(left, top);
-  ctx.lineTo(left + letterWidth + 4, top);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(left + letterWidth + 4, top);
-  ctx.lineTo(left + letterWidth, top - 3);
-  ctx.lineTo(left + letterWidth, top + 3);
-  ctx.closePath();
-  ctx.fill();
   ctx.restore();
+}
+
+function drawCanvasVectorArrowMark(ctx, label, x, y, color, font='700 19px Chakra Petch, Noto Sans Thai, sans-serif') {
+  const name=String(label).replace(/[\u20d7\u0302]/g,'');
+  const previous=ctx.__lastVectorArrowMark;
+  if(previous&&previous.name===name&&Math.abs(previous.x-x)<2&&Math.abs(previous.y-y)<8){ctx.__lastVectorArrowMark=null;return}
+  ctx.__lastVectorArrowMark={name,x,y};
+  ctx.save();ctx.font=font;const prefixWidth=name.startsWith('-')?ctx.measureText('-').width:0,letter=name.replace(/^-/,'').charAt(0),letterWidth=Math.max(10,ctx.measureText(letter).width),left=x+prefixWidth,top=y-20;ctx.strokeStyle=ctx.fillStyle=color;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(left,top);ctx.lineTo(left+letterWidth+4,top);ctx.stroke();ctx.beginPath();ctx.moveTo(left+letterWidth+4,top);ctx.lineTo(left+letterWidth,top-3);ctx.lineTo(left+letterWidth,top+3);ctx.closePath();ctx.fill();ctx.restore()
+}
+
+// Add vector notation to every canvas label, including graphs created later while playing.
+if(!CanvasRenderingContext2D.prototype.__vectorLabelArrows){
+  const originalFillText=CanvasRenderingContext2D.prototype.fillText;
+  CanvasRenderingContext2D.prototype.fillText=function(text,x,y,maxWidth){
+    const result=maxWidth===undefined?originalFillText.call(this,text,x,y):originalFillText.call(this,text,x,y,maxWidth),plain=String(text).replace(/[\u20d7\u0302]/g,''),match=plain.match(/^(-?)(A|B|C|P|Q)(?=\s|=|\(|$)/);
+    if(match){const width=this.measureText(plain).width,left=this.textAlign==='center'?x-width/2:this.textAlign==='right'||this.textAlign==='end'?x-width:x,color=this.fillStyle;drawCanvasVectorArrowMark(this,match[0],left,y,color,this.font)}
+    return result
+  };
+  CanvasRenderingContext2D.prototype.__vectorLabelArrows=true
 }
 
 drawVectors = function(vectors) {

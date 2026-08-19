@@ -747,6 +747,21 @@ document.addEventListener('pointerdown',e=>{if(e.target.closest('.mobile-pad but
 const renderChallengeBeforeRemovingBossScratchButton=renderChallenge;
 renderChallenge=function(q){renderChallengeBeforeRemovingBossScratchButton(q);document.querySelector('.boss-scratch-btn')?.remove()};
 
+// Use concise wording in the real Q4-Q5 boss screens.
+const renderChallengeBeforeConciseQ4Q5Prompts=renderChallenge;
+renderChallenge=function(q){
+  renderChallengeBeforeConciseQ4Q5Prompts(q);
+  const question=document.querySelector('.challenge-box .question');
+  if(q.id===4){
+    document.querySelector('.q4-boss-given')?.remove();
+    if(question)question.textContent='หา B ที่ตั้งฉากกับ A และ C ที่ตั้งฉากกับ -A พร้อมวาดพิกัดในระนาบ X Y';
+  }
+  if(q.id===5){
+    document.querySelector('.q5-boss-given')?.remove();
+    if(question)question.textContent='จงคำนวณ dot product ระหว่าง unit vector ของ B กับ unit vector ของ C';
+  }
+};
+
 // Door warp SFX and a boss-defeat scene before the reward page.
 const openQuestBeforePortalSfx=openQuest;
 openQuest=function(...args){if(document.querySelector('.adventure-screen'))vectoriaAudio.effect('portal');return openQuestBeforePortalSfx(...args)};

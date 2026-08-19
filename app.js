@@ -721,6 +721,23 @@ completeQuest=function(q){if(bossDefeatRunning)return;bossDefeatRunning=true;con
 const placeScratchpadForScreen=()=>{const scratch=document.querySelector('#universalScratch'),game=document.querySelector('.game-screen'),app=document.querySelector('#app');if(!scratch)return;if(game){if(scratch.previousElementSibling!==app)app.insertAdjacentElement('afterend',scratch);scratch.classList.add('in-game')}else{if(scratch.parentElement!==document.body)document.body.append(scratch);scratch.classList.remove('in-game')}};
 new MutationObserver(()=>requestAnimationFrame(placeScratchpadForScreen)).observe(document.querySelector('#app'),{childList:true,subtree:true});
 placeScratchpadForScreen();
+
+// Keep the real Q4-Q5 boss prompts concise. The coordinates remain available
+// through the preceding lessons and game state without being repeated here.
+const renderChallengeBeforeConciseRealQuestions=renderChallenge;
+renderChallenge=function(q){
+  renderChallengeBeforeConciseRealQuestions(q);
+  const question=document.querySelector('.challenge-box .question');
+  if(q.id===4){
+    document.querySelector('.q4-boss-given')?.remove();
+    if(question)question.textContent='หา B ที่ตั้งฉากกับ A และ C ที่ตั้งฉากกับ -A พร้อมวาดพิกัดในระนาบ X Y';
+  }
+  if(q.id===5){
+    document.querySelector('.q5-boss-given')?.remove();
+    if(question)question.textContent='จงคำนวณ dot product ระหว่าง unit vector ของ B กับ unit vector ของ C';
+  }
+};
+
 // Floor 4 boss: only allow graphing vectors that are actually perpendicular.
 // This keeps the angle diagram mathematically consistent (theta must be 90 degrees).
 const renderBossGraphBeforePerpendicularGuard = renderBossGraph;
